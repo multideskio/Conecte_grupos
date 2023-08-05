@@ -10,9 +10,4 @@ class Auth extends BaseController
     {
         //
     }
-
-    public function conectcrm($idUser, $apiDashboard){
-        $request = request();
-        return $request->getJSON();
-    }
 }

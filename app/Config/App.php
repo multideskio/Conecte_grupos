@@ -446,4 +446,14 @@ class App extends BaseConfig
      * @see http://www.w3.org/TR/CSP/
      */
     public bool $CSPEnabled = false;
+
+    // Outras configurações...
+
+    /**
+     * Versão do Sistema
+     * --------------------------------------------------------------------------
+     *
+     * Especifique aqui a versão do seu sistema.
+     */
+    public string $version = '1.0.0';
 }

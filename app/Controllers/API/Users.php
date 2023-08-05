@@ -75,4 +75,24 @@ class Users extends ResourceController
     {
         //
     }
+
+    public function auth($idUser, $apiDashboard){
+        /**
+         * ações de login
+         */
+
+
+
+
+
+        /**
+         * temp
+         */
+        $data = array(
+            'idUser'  => $idUser,
+            'api_key' => $apiDashboard,
+            'version' => config('App')->version
+        );
+        return $this->response->setJSON($data);
+    }
 }

@@ -32,7 +32,7 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 
 $routes->group('login', static function($routes){
-    $routes->get("auth/(:any)/(:any)", 'Auth::conectcrm/$1/$2');
+    
 });
 
 //API'S
@@ -50,6 +50,7 @@ $routes->group('api', static function ($routes) {
     $routes->resource('v1/groups',    ['controller' => Groups::class]);    //
     $routes->resource('v1/instances', ['controller' => Instances::class]); //
     $routes->resource('v1/users',     ['controller' => Users::class]);     //
+    $routes->get('v1/auth/(:any)/(:any)', 'API\Users::auth/$1/$2');     //
 });
 
 
