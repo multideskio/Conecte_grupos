@@ -56,9 +56,9 @@ $routes->group('api/v1', static function ($routes) {
     $routes->resource('contacts',  ['controller' => Contacts::class]);  //
     $routes->resource('config',    ['controller' => Config::class]);    //
 
-    $routes->group('groups', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
+    $routes->group('groups', ['namespace' => 'App\Controllers'], static function ($routes) {
         $routes->resource('',    ['controller' => Groups::class]);
-        $routes->post('send', 'Groups::sendMessage');
+        $routes->post('send', 'API\Groups::sendMessage');
     });    //
     $routes->resource('instances', ['controller' => Instances::class]); //
     $routes->resource('users',     ['controller' => Users::class]);     //
