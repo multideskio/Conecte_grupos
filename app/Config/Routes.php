@@ -30,9 +30,17 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+$routes->get('/groups', 'Home::groups');
 
-$routes->group('login', static function($routes){
-    
+$routes->group('login', static function ($routes) {
+});
+
+//chatwoot frontend
+$routes->group('chatwoot', ['namespace' => 'App\Controllers\Chatwoot'], static function ($routes) {
+    $routes->get('',          'Home::index');
+    $routes->get('home',      'Home::index');
+    $routes->get('campanhas', 'Home::campanhas');
+    $routes->get('campanhas/(:num)', 'Home::campanhas/$1');
 });
 
 //API'S
@@ -43,14 +51,18 @@ use API\Groups;
 use API\Instances;
 use API\Users;
 
-$routes->group('api', static function ($routes) {
-    $routes->resource('v1/admin',     ['controller' => Admin::class]);     //
-    $routes->resource('v1/contacts',  ['controller' => Contacts::class]);  //
-    $routes->resource('v1/config',    ['controller' => Config::class]);    //
-    $routes->resource('v1/groups',    ['controller' => Groups::class]);    //
-    $routes->resource('v1/instances', ['controller' => Instances::class]); //
-    $routes->resource('v1/users',     ['controller' => Users::class]);     //
-    $routes->get('v1/auth/(:any)/(:any)', 'API\Users::auth/$1/$2');     //
+$routes->group('api/v1', static function ($routes) {
+    $routes->resource('admin',     ['controller' => Admin::class]);     //
+    $routes->resource('contacts',  ['controller' => Contacts::class]);  //
+    $routes->resource('config',    ['controller' => Config::class]);    //
+
+    $routes->group('groups', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
+        $routes->resource('',    ['controller' => Groups::class]);
+        $routes->post('send', 'Groups::sendMessage');
+    });    //
+    $routes->resource('instances', ['controller' => Instances::class]); //
+    $routes->resource('users',     ['controller' => Users::class]);     //
+    $routes->get('auth/(:any)/(:any)', 'API\Users::auth/$1/$2');     //
 });
 
 
