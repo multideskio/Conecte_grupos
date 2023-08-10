@@ -2,7 +2,7 @@
 
 <head>
 
-    <?php echo view('chatwoot/partials/title-meta', array('title' => 'Starter')); ?>
+    <?php echo view('chatwoot/partials/title-meta', array('title' => 'Campanhas')); ?>
 
     <?= $this->include('chatwoot/partials/head-css') ?>
 
@@ -22,9 +22,8 @@
 
             <div class="page-content">
                 <div class="container-fluid">
-
-                    <?php echo view('chatwoot/partials/page-title', array('pagetitle' => 'Pages', 'title' => 'Teste')); ?>
-
+                    <?php echo view('chatwoot/partials/page-title', array('pagetitle' => 'Pages', 'title' => 'Campanhas')); ?>
+                    <?php echo view('chatwoot/campaigns/lists/cards') ?>
                 </div>
                 <!-- container-fluid -->
             </div>

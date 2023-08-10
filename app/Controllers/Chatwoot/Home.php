@@ -15,6 +15,6 @@ class Home extends BaseController
     }
     public function campanhas(){
 
-        return view('chatwoot/campanhas');
+        return view('chatwoot/campaigns/home');
     }
 }

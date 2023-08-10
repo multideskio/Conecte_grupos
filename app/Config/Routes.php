@@ -30,14 +30,18 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->get('/groups', 'Home::groups');
+//$routes->get('/groups', 'Home::groups');
+
+//rotas sem proteção
+
 $routes->get('/disconnected', 'Home::sair');
 
 $routes->group('login', static function ($routes) {
+    $routes->get('/', 'Auth::index');
 });
 
 //chatwoot frontend
-$routes->group('chatwoot', ['namespace' => 'App\Controllers\Chatwoot'], static function ($routes) {
+$routes->group('chatwoot', ['filter' => 'logged', 'namespace' => 'App\Controllers\Chatwoot'], static function ($routes) {
     $routes->get('',          'Home::index');
     $routes->get('home',      'Home::index');
     $routes->get('campanhas', 'Home::campanhas');
@@ -52,7 +56,9 @@ use API\Groups;
 use API\Instances;
 use API\Users;
 
-$routes->group('api/v1', static function ($routes) {
+$routes->get('api/v1/auth/(:any)/(:any)', 'API\Users::auth/$1/$2'); 
+
+$routes->group('api/v1', ['filter' => 'logged'], static function ($routes) {
     $routes->resource('admin',     ['controller' => Admin::class]);     //
     $routes->resource('contacts',  ['controller' => Contacts::class]);  //
     $routes->resource('config',    ['controller' => Config::class]);    //
@@ -63,9 +69,8 @@ $routes->group('api/v1', static function ($routes) {
     });    //
     $routes->resource('instances', ['controller' => Instances::class]); //
     $routes->resource('users',     ['controller' => Users::class]);     //
-    $routes->get('auth/(:any)/(:any)', 'API\Users::auth/$1/$2');     //
+        //
 });
-
 
 
 /*
