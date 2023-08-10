@@ -14,6 +14,14 @@ class Groups extends ResourceController
      * @return mixed
      */
     use ResponseTrait;
+
+    protected $session;
+
+    public function __construct()
+    {
+        $this->session = $this->session = \Config\Services::session();
+    }
+    
     public function index($instancia = false)
     {
     }
@@ -26,7 +34,7 @@ class Groups extends ResourceController
     public function show($id = null)
     {
         //
-        $groups = new Groups_Libraries('https://app.conect.app', '0F60574D-5382-456A-AA39-59382213E7C9', $id);
+        $groups = new Groups_Libraries('https://noreply.conect.app', '9070AC39-C742-4134-87EE-03365594ABF1', 'whatsapp');
         return $this->respond($groups->listGroups('false'));
     }
 
@@ -49,7 +57,7 @@ class Groups extends ResourceController
     {
         //
         $posts = $this->request->getPost();
-        $groups = new Groups_Libraries('https://app.conect.app', 'B6D711FCDE4D4FD5936544120E713976', 'meupessoal');
+        $groups = new Groups_Libraries('https://noreply.conect.app', '9070AC39-C742-4134-87EE-03365594ABF1', 'whatsapp');
         $create = $groups->createGroups($posts['numbers'], $posts['name']);
 
         return $this->respond($create);
@@ -89,7 +97,7 @@ class Groups extends ResourceController
     {
         $posts = $this->request->getPost();
         $listaDestino = explode(', ', $posts['destino']);
-        $groups = new Groups_Libraries('https://app.conect.app', 'B6D711FCDE4D4FD5936544120E713976', 'meupessoal');
+        $groups = new Groups_Libraries('https://noreply.conect.app', '9070AC39-C742-4134-87EE-03365594ABF1', 'whatsapp');
         try {
             $sends = $groups->sendMessage($listaDestino, $posts['message'], (isset($posts['mentions'])) ? true : false);
             return $this->respond(['code' => 200, 'status' => 'ok', 'sends' => $sends]);

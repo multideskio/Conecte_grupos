@@ -2,7 +2,7 @@
 
 <head>
 
-    <?php echo view('chatwoot/partials/title-meta', array('title' => 'Starter')); ?>
+    <?php echo view('chatwoot/partials/title-meta', array('title' => 'Dashboard')); ?>
 
     <!--datatable css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
@@ -30,17 +30,16 @@
             <div class="page-content">
                 <div class="container-fluid">
 
-                    <?php echo view('chatwoot/partials/page-title', array('pagetitle' => 'Pages', 'title' => 'Teste')); ?>
-
+                    <?php echo view('chatwoot/partials/page-title', array('pagetitle' => 'Home', 'title' => 'Dashboard')); ?>
 
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title mb-0 flex-grow-1">Deals Status</h4>
+                                    <h4 class="card-title mb-0 flex-grow-1">Todos os grupos</h4>
                                 </div><!-- end card header -->
                                 <div class="card-body">
-                                    <div class="table-card">
+                                    <div class="table-card p-2">
                                         <table id="scroll-home-vertical" class="table table-bordered dt-responsive nowrap align-middle mdl-data-table" style="width:100%">
                                             <thead>
                                                 <tr>
@@ -76,9 +75,20 @@
                                             </tbody><!-- end tbody -->
                                         </table><!-- end table -->
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                            ENVIAR MENSAGEM
-                                        </button>
+                                        <div class="p-2">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sendMessageModal">
+                                                ENVIAR MENSAGEM
+                                            </button>
+
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createGroups">
+                                                CRIAR GRUPOS
+                                            </button>
+
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editGroups">
+                                                EDITAR EM MASSA
+                                            </button>
+                                        </div>
+
                                     </div><!-- end table responsive -->
                                 </div><!-- end card body -->
                             </div><!-- end card -->
@@ -95,11 +105,11 @@
 
 
             <!-- Modal -->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="sendMessageModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sendMessageModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                            <h5 class="modal-title" id="sendMessageModalLabel">Modal title</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <?= form_open('api/v1/groups/send', ['id' => 'sendGroups']) ?>
@@ -160,8 +170,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             let table = new DataTable('#scroll-home-vertical', {
-                "scrollY": "300px",
-                "scrollCollapse": true,
+                "scrollY": "450px",
+                "scrollCollapse": false,
                 "paging": false
             });
 

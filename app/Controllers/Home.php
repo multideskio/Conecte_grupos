@@ -16,4 +16,9 @@ class Home extends BaseController
         $groups = new Groups_Libraries('https://app.conect.app', 'B6D711FCDE4D4FD5936544120E713976', 'watsapp_dinamus');
         return $this->response->setJSON($groups->listGroups());
     }
+
+    public function sair(){
+        session_destroy();
+        echo "SAIU";
+    }
 }

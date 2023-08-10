@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateAdmin extends Migration
+class CreateCampaigns extends Migration
 {
     public function up()
     {
@@ -15,31 +15,17 @@ class CreateAdmin extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
+            'id_company' => [
+                'type' => 'int',
+                'unsigned' => true
+            ],
             'name' => [
                 'type' => 'varchar',
-                'constraint' => 60,
-                'null' => false
+                'constraint' => '80'
             ],
-            'apikey' => [
+            'description' => [
                 'type' => 'varchar',
-                'constraint' => 60,
-                'null' => false
-            ],
-            'email' => [
-                'type' => 'varchar',
-                'constraint' => '60'
-            ],
-            'wa' => [
-                'type' => 'varchar',
-                'constraint' => '15'
-            ],
-            'password' => [
-                'type' => 'varchar',
-                'constraint' => '120'
-            ],
-            'token' => [
-                'type' => 'varchar',
-                'constraint' => '120'
+                'constraint' => '160'
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -56,12 +42,14 @@ class CreateAdmin extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
-        $this->forge->createTable('superadmin', true);
+        $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('campaigns', true);
     }
 
     public function down()
     {
         //
-        $this->forge->dropTable('superadmin', true);
+        $this->forge->dropTable('campaigns', true);
+
     }
 }

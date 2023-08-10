@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateAdmin extends Migration
+class CreateSends extends Migration
 {
     public function up()
     {
@@ -15,31 +15,22 @@ class CreateAdmin extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'name' => [
+            'id_company' => [
+                'type' => 'int',
+                'unsigned' => true
+            ],
+            'id_campaign' => [
+                'type' => 'int',
+                'unsigned' => true
+            ],
+            'id_group' => [
                 'type' => 'varchar',
-                'constraint' => 60,
+                'constraint' => '80',
                 'null' => false
             ],
-            'apikey' => [
-                'type' => 'varchar',
-                'constraint' => 60,
-                'null' => false
-            ],
-            'email' => [
-                'type' => 'varchar',
-                'constraint' => '60'
-            ],
-            'wa' => [
-                'type' => 'varchar',
-                'constraint' => '15'
-            ],
-            'password' => [
-                'type' => 'varchar',
-                'constraint' => '120'
-            ],
-            'token' => [
-                'type' => 'varchar',
-                'constraint' => '120'
+            'message' => [
+                'type' => 'text',
+                'null' => true
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -56,12 +47,14 @@ class CreateAdmin extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
-        $this->forge->createTable('superadmin', true);
+        $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('id_campaign', 'campaigns', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('sends', true);
     }
 
     public function down()
     {
         //
-        $this->forge->dropTable('superadmin', true);
+        $this->forge->dropTable('sends', true);
     }
 }

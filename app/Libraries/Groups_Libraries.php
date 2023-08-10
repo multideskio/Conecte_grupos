@@ -96,6 +96,8 @@ class Groups_Libraries
     {
 
         $url = "{$this->apiUrl}/message/sendText/{$this->instance}";
+
+        //headers
         $headers = array(
             'Accept' =>  '*/*',
             'apikey' => $this->apiKey,
@@ -107,13 +109,14 @@ class Groups_Libraries
         $client = \Config\Services::curlrequest();
 
         try {
+            //monta mensagem em um laço de repetição
             foreach ($listaDestino as $destino) {
+                //monta mensagem
                 $posts = [
                     "number" => $destino,
                     "options" => [
                         "delay" => 1200,
                         "presence" => "composing",
-                        "linkPreview" => false,
                         "mentions" => [
                             "everyOne" => $mentions
                         ]

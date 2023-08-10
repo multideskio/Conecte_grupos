@@ -2,6 +2,8 @@
 
 namespace App\Controllers\Api;
 
+use App\Services\AuthService; // Importa a classe AuthService
+use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
 
 class Users extends ResourceController
@@ -11,6 +13,16 @@ class Users extends ResourceController
      *
      * @return mixed
      */
+    use ResponseTrait;
+
+    protected $session;
+
+
+    public function __construct()
+    {
+        $this->session = $this->session = \Config\Services::session();
+    }
+
     public function index()
     {
         //
@@ -76,23 +88,21 @@ class Users extends ResourceController
         //
     }
 
-    public function auth($idUser, $apiDashboard){
-        /**
-         * ações de login
-         */
+    public function auth($id_chatwoot, $apiDashboard)
+    {
+        try {
 
+            $authService = new AuthService();
+            // Chama o método authenticate do AuthService para autenticar
+            $userId = $authService->authenticate($id_chatwoot, $apiDashboard);
+            
+            // Retorna a resposta de sucesso com o ID do usuário autenticado
+            //return $this->respond($userId);
+            return redirect()->to(site_url('chatwoot'));
 
-
-
-
-        /**
-         * temp
-         */
-        $data = array(
-            'idUser'  => $idUser,
-            'api_key' => $apiDashboard,
-            'version' => config('App')->version
-        );
-        return $this->response->setJSON($data);
+        } catch (\Exception $e) {
+            // Retorna a resposta de erro com a mensagem da exceção
+            return $this->failUnauthorized($e->getMessage());
+        }
     }
 }
