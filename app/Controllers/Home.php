@@ -18,7 +18,7 @@ class Home extends BaseController
     }
 
     public function sair(){
-        //session_destroy();
+        session_destroy();
         $pass = password_hash('mudar@123', PASSWORD_BCRYPT);
 
         echo $pass;
