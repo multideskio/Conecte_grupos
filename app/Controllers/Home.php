@@ -58,6 +58,6 @@ class Home extends BaseController
         // Decodificar a resposta como JSON e retornar os dados decodificados
       //  $json[] = json_decode($responseBody, true);
 
-        return $this->response->setJSON($posts) ;
+        return $this->response->setJSON(['body' => $posts]) ;
     }
 }
