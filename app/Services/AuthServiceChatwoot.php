@@ -57,7 +57,7 @@ class AuthServiceChatwoot
      */
     protected function findCompany($id_chatwoot, $apiDashboard)
     {
-        return $this->mCompany->select('id, company', 'id_admin')
+        return $this->mCompany->select('id, company, id_admin')
             ->where('id_chatwoot', $id_chatwoot)
             ->where('api_key_chatwoot', $apiDashboard)
             ->first();
