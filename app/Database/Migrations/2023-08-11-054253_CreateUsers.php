@@ -4,11 +4,11 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateGroups extends Migration
+class CreateUsers extends Migration
 {
     public function up()
     {
-        //CRIAÇÃO DE GRUPOS
+        //Tabel para todos os usuários relacionando e definindo a uma empresa
         $this->forge->addField([
             'id' => [
                 'type' => 'int',
@@ -19,29 +19,44 @@ class CreateGroups extends Migration
                 'type' => 'int',
                 'unsigned' => true
             ],
-            'id_campaign' => [
-                'type' => 'int',
-                'unsigned' => true
-            ],
-            'id_group' => [
-                'type' => 'varchar',
-                'constraint' => 30,
-                'null' => false
-            ],
             'name' => [
                 'type' => 'varchar',
-                'constraint' => 20,
+                'constraint' => 60,
                 'null' => false
             ],
-            'participants' => [
-                'type' => 'int',
-                'constraint' => 4,
-                'null' => true
-            ],
-            'description' => [
+            'wa_number' => [
                 'type' => 'varchar',
-                'constraint' => '40',
-                'null' => true
+                'constraint' => '15'
+            ],
+            'email' => [
+                'type' => 'varchar',
+                'constraint' => '60'
+            ],
+            'level' => [
+                'type' => 'varchar',
+                'constraint' => 10,
+                'null' => false
+            ],
+            'permission' => [
+                'type' => 'int',
+                'constraint' => 1,
+                'null' => false
+            ],
+            'status' => [
+                'type' => 'bool',
+                'DEFAULT' => true
+            ],
+            'password' => [
+                'type' => 'varchar',
+                'constraint' => '100'
+            ],
+            'token' => [
+                'type' => 'varchar',
+                'constraint' => '100'
+            ],
+            'image' => [
+                'type' => 'varchar',
+                'constraint' => '100'
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -59,14 +74,12 @@ class CreateGroups extends Migration
 
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('id_campaign', 'campaigns', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('groups', true);
+        $this->forge->createTable('users', true);
     }
 
     public function down()
     {
         //
-        $this->forge->dropTable('groups', true);
-
+        $this->forge->dropTable('users', true);
     }
 }

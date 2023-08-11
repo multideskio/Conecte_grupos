@@ -8,12 +8,16 @@ class CreateScheduledCampaigns extends Migration
 {
     public function up()
     {
-        //
+        //RELACIONA CAMPANHA COM AGENDAMENTO
         $this->forge->addField([
             'id' => [
                 'type' => 'int',
                 'unsigned' => true,
                 'auto_increment' => true
+            ],
+            'id_company' => [
+                'type' => 'int',
+                'unsigned' => true
             ],
             'id_campaign' => [
                 'type' => 'int',
@@ -38,6 +42,7 @@ class CreateScheduledCampaigns extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
+        $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('id_campaign', 'campaigns', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('id_scheduled', 'scheduleds', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('scheduled_campaigns', true);

@@ -8,7 +8,7 @@ class CreateCompany extends Migration
 {
     public function up()
     {
-        //
+        //CLIENTE DO ADMINISTRADOR
         $this->forge->addField([
             'id' => [
                 'type' => 'int',
@@ -31,18 +31,6 @@ class CreateCompany extends Migration
                 'type' => 'varchar',
                 'constraint' => '40'
             ],
-            'wa' => [
-                'type' => 'varchar',
-                'constraint' => '15'
-            ],
-            'password' => [
-                'type' => 'varchar',
-                'constraint' => '120'
-            ],
-            'token' => [
-                'type' => 'varchar',
-                'constraint' => '120'
-            ],
             'logo' => [
                 'type' => 'varchar',
                 'constraint' => '80'
@@ -50,14 +38,6 @@ class CreateCompany extends Migration
             'ico' => [
                 'type' => 'varchar',
                 'constraint' => '40'
-            ],
-            'url_api_wa' => [
-                'type' => 'varchar',
-                'constraint' => '60'
-            ],
-            'api_key_wa' => [
-                'type' => 'varchar',
-                'constraint' => '60'
             ],
             'id_chatwoot' => [
                 'type' => 'int',

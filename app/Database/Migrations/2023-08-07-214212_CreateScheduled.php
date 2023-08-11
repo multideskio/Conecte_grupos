@@ -8,7 +8,7 @@ class CreateScheduled extends Migration
 {
     public function up()
     {
-        //
+        //AGENDAMENTOS
         $this->forge->addField([
             'id' => [
                 'type' => 'int',
@@ -21,11 +21,12 @@ class CreateScheduled extends Migration
             ],
             'name' => [
                 'type' => 'varchar',
-                'constraint' => '120'
+                'constraint' => 40
             ],
             'message' => [
-                'type' => 'text',
-                'null' => false
+                'type' => 'varchar',
+                'null' => false,
+                'constraint' => 120
             ],
             'archive' => [
                 'type' => 'varchar',
@@ -34,7 +35,7 @@ class CreateScheduled extends Migration
             ],
             'type_archive' => [
                 'type' => 'varchar',
-                'constraint' => '20',
+                'constraint' => '10',
                 'null' => true
             ],
             'senders' => [

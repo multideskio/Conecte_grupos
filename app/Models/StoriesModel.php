@@ -4,30 +4,21 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class CompanyModel extends Model
+class StoriesModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'companies';
+    protected $table            = 'stories';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
+    protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    
     protected $allowedFields    = [
-        'id_admin', 
-        'name',
-        'company', 
-        'email', 
-        'logo', 
-        'ico', 'id_chatwoot', 
-        'url_chatwoot', 
-        'api_key_chatwoot', 
-        'status'
+        'id_company', 'id_user', 'message'
     ];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';

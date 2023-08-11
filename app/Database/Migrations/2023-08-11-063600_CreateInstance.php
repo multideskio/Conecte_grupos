@@ -4,28 +4,36 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateCampaigns extends Migration
+class CreateInstance extends Migration
 {
     public function up()
     {
-        //CRIAÇÃO DE CAMPANHA
+        //TABELA DE INSTANCIAS DO SUPER ADMIN COMPARTILHADA COM OS DEMAIS CLIENTES
         $this->forge->addField([
             'id' => [
                 'type' => 'int',
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'id_company' => [
+            'id_superadmin' => [
                 'type' => 'int',
                 'unsigned' => true
             ],
             'name' => [
                 'type' => 'varchar',
-                'constraint' => '80'
+                'constraint' => '60'
             ],
-            'description' => [
+            'url_api_wa' => [
                 'type' => 'varchar',
-                'constraint' => '160'
+                'constraint' => '60'
+            ],
+            'wa_number' => [
+                'type' => 'varchar',
+                'constraint' => '15'
+            ],
+            'api_key_wa' => [
+                'type' => 'varchar',
+                'constraint' => '60'
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -42,14 +50,13 @@ class CreateCampaigns extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
-        $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('campaigns', true);
+        $this->forge->addForeignKey('id_superadmin', 'superadmin', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('instances', true);
     }
 
     public function down()
     {
         //
-        $this->forge->dropTable('campaigns', true);
-
+        $this->forge->dropTable('instances', true);
     }
 }

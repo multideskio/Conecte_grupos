@@ -8,7 +8,7 @@ class CreateAdmin extends Migration
 {
     public function up()
     {
-        //
+        //ADMINISTRADO DO SISTEMA
         $this->forge->addField([
             'id' => [
                 'type' => 'int',
@@ -20,26 +20,13 @@ class CreateAdmin extends Migration
                 'constraint' => 60,
                 'null' => false
             ],
-            'apikey' => [
-                'type' => 'varchar',
-                'constraint' => 60,
-                'null' => false
-            ],
-            'email' => [
+            'url_api_wa' => [
                 'type' => 'varchar',
                 'constraint' => '60'
             ],
-            'wa' => [
+            'api_key_wa' => [
                 'type' => 'varchar',
-                'constraint' => '15'
-            ],
-            'password' => [
-                'type' => 'varchar',
-                'constraint' => '120'
-            ],
-            'token' => [
-                'type' => 'varchar',
-                'constraint' => '120'
+                'constraint' => '60'
             ],
             'created_at' => [
                 'type' => 'DATETIME',

@@ -14,9 +14,7 @@ class CampaignModel extends Model
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_company',
-        'name',
-        'description'
+        'id_company', 'name', 'description'
     ];
 
     // Dates

@@ -41,7 +41,7 @@ $routes->group('login', static function ($routes) {
 });
 
 //chatwoot frontend
-$routes->group('chatwoot', ['filter' => 'logged', 'namespace' => 'App\Controllers\Chatwoot'], static function ($routes) {
+$routes->group('chatwoot', ['filter' => 'loggedchatwoot', 'namespace' => 'App\Controllers\Chatwoot'], static function ($routes) {
     $routes->get('',          'Home::index');
     $routes->get('home',      'Home::index');
     $routes->get('campanhas', 'Home::campanhas');

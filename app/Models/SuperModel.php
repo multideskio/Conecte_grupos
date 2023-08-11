@@ -14,12 +14,7 @@ class SuperModel extends Model
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'name',
-        'apikey',
-        'email',
-        'wa',
-        'password',
-        'token'
+        'name', 'url_api_wa', 'api_key_wa'
     ];
 
     // Dates

@@ -25,23 +25,15 @@ class Cors implements FilterInterface
      */
     public function before(RequestInterface $request, $arguments = null)
     {
-        //
-        // Defina o domínio permitido
-        $allowedOrigin = 'https://igrsistemas.com';
-
-        // Verifique se a origem da solicitação está na lista de origens permitidas
-        if (isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['HTTP_ORIGIN'] === $allowedOrigin) {
-            header("Access-Control-Allow-Origin: $allowedOrigin");
-            header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-            header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-            header("Access-Control-Allow-Credentials: true");
+        
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Headers: X-API-KEY, Origin,X-Requested-With, Content-Type, Accept, Access-Control-Requested-Method, Authorization");
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PATCH, PUT, DELETE");
+        $method = $_SERVER['REQUEST_METHOD'];
+        if ($method == "OPTIONS") {
+            die();
         }
 
-        $request = service('request');
-        // Se a solicitação for uma opção (preflight), retorne uma resposta vazia com status 200 OK
-        if ($request->getMethod() === 'options') {
-            return empty_response(200);
-        }
     }
 
     /**

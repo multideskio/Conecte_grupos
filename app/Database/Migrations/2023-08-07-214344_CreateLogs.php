@@ -8,7 +8,7 @@ class CreateLogs extends Migration
 {
     public function up()
     {
-        //
+        //LOGS DE TUDO QUE ACONTECE
         $this->forge->addField([
             'id' => [
                 'type' => 'int',
@@ -16,6 +16,10 @@ class CreateLogs extends Migration
                 'auto_increment' => true
             ],
             'id_company' => [
+                'type' => 'int',
+                'unsigned' => true
+            ],
+            'id_user' => [
                 'type' => 'int',
                 'unsigned' => true
             ],
@@ -39,12 +43,13 @@ class CreateLogs extends Migration
 
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('logs', true);
+        $this->forge->addForeignKey('id_user', 'users', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('stories', true);
     }
 
     public function down()
     {
         //
-        $this->forge->dropTable('logs', true);
+        $this->forge->dropTable('stories', true);
     }
 }

@@ -6,7 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class LoggedIn implements FilterInterface
+class LoggedInSuper implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -28,7 +28,7 @@ class LoggedIn implements FilterInterface
         //
         $loggedSession = session('user');
 
-        if(!isset($loggedSession['isConnected']) && isset($loggedSession['isConnectedSuper'])){
+        if(!isset($loggedSession['isConnectedSuper'])){
             return redirect()->to('login');
         }
     }

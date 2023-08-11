@@ -4,26 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class CompanyModel extends Model
+class UserModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'companies';
+    protected $table            = 'users';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    
     protected $allowedFields    = [
-        'id_admin', 
-        'name',
-        'company', 
-        'email', 
-        'logo', 
-        'ico', 'id_chatwoot', 
-        'url_chatwoot', 
-        'api_key_chatwoot', 
-        'status'
+        'id_company', 'name', 'email', 'level', 'permission', 'status', 'password', 'token', 'image', 'wa_number'
     ];
 
     // Dates

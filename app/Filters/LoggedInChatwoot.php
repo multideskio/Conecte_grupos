@@ -6,7 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class LoggedIn implements FilterInterface
+class LoggedInChatwoot implements FilterInterface
 {
     /**
      * Do whatever processing this filter needs to do.
@@ -26,9 +26,10 @@ class LoggedIn implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
         //
+        //
         $loggedSession = session('user');
 
-        if(!isset($loggedSession['isConnected']) && isset($loggedSession['isConnectedSuper'])){
+        if (!isset($loggedSession['isConnectedChatwoot'])) {
             return redirect()->to('login');
         }
     }

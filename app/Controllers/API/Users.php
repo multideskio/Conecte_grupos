@@ -2,7 +2,10 @@
 
 namespace App\Controllers\Api;
 
+use App\Models\CompanyModel;
+use App\Models\UserModel;
 use App\Services\AuthService; // Importa a classe AuthService
+use App\Services\AuthServiceChatwoot;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
 
@@ -88,18 +91,40 @@ class Users extends ResourceController
         //
     }
 
+    /**
+     * Autentica um usuário com base nas credenciais do Chatwoot.
+     *
+     * @param string $id_chatwoot
+     * @param string $apiDashboard
+     * @return mixed
+     */
     public function auth($id_chatwoot, $apiDashboard)
+    {
+        // Injeta o AuthServiceChatwoot e os Modelos no construtor do controlador
+        $authService = new AuthServiceChatwoot(new CompanyModel(), new UserModel());
+        
+        // Chama o método de autenticação do serviço
+        $authResult = $authService->authenticate($id_chatwoot, $apiDashboard);
+        
+        if (is_array($authResult)) {
+            return redirect()->to(site_url('chatwoot'));
+            //return $this->respond($authResult); // Retorna detalhes do usuário autenticado
+        } else {
+            return $this->failUnauthorized($authResult); // Retorna mensagem de erro
+        }
+    }
+
+    public function test($id_chatwoot, $apiDashboard)
     {
         try {
 
             $authService = new AuthService();
             // Chama o método authenticate do AuthService para autenticar
             $userId = $authService->authenticate($id_chatwoot, $apiDashboard);
-            
+
             // Retorna a resposta de sucesso com o ID do usuário autenticado
             //return $this->respond($userId);
             return redirect()->to(site_url('chatwoot'));
-
         } catch (\Exception $e) {
             // Retorna a resposta de erro com a mensagem da exceção
             return $this->failUnauthorized($e->getMessage());

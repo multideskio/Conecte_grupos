@@ -4,11 +4,11 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateCampaigns extends Migration
+class CreateUsersInstanceCompany extends Migration
 {
     public function up()
     {
-        //CRIAÇÃO DE CAMPANHA
+        //RELACIONA INSTANCIAS COM USUÁRIOS E EMPRESAS
         $this->forge->addField([
             'id' => [
                 'type' => 'int',
@@ -19,13 +19,13 @@ class CreateCampaigns extends Migration
                 'type' => 'int',
                 'unsigned' => true
             ],
-            'name' => [
-                'type' => 'varchar',
-                'constraint' => '80'
+            'id_user' => [
+                'type' => 'int',
+                'unsigned' => true
             ],
-            'description' => [
-                'type' => 'varchar',
-                'constraint' => '160'
+            'id_instance' => [
+                'type' => 'int',
+                'unsigned' => true
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -43,13 +43,15 @@ class CreateCampaigns extends Migration
 
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('campaigns', true);
+        $this->forge->addForeignKey('id_user', 'users', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('id_instance', 'instances', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('instance_user_company', true);
     }
 
     public function down()
     {
         //
-        $this->forge->dropTable('campaigns', true);
+        $this->forge->dropTable('instance_user_company', true);
 
     }
 }

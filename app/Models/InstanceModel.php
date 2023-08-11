@@ -4,26 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class CompanyModel extends Model
+class InstanceModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'companies';
+    protected $table            = 'instances';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    
     protected $allowedFields    = [
-        'id_admin', 
-        'name',
-        'company', 
-        'email', 
-        'logo', 
-        'ico', 'id_chatwoot', 
-        'url_chatwoot', 
-        'api_key_chatwoot', 
-        'status'
+        'id_superadmin', 'name', 'url_api_wa', 'wa_number', 'api_key_wa'
     ];
 
     // Dates

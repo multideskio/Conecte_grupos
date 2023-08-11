@@ -22,6 +22,7 @@ class Filters extends BaseConfig
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'logged' => \App\Filters\LoggedIn::class,
+        'loggedchatwoot' => \App\Filters\LoggedInChatwoot::class,
         'cors' => \App\Filters\Cors::class
         
     ];

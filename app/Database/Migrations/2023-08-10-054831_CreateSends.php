@@ -8,7 +8,7 @@ class CreateSends extends Migration
 {
     public function up()
     {
-        //
+        //REGISTRO DE ENVIOS DAS CAMPANHAS
         $this->forge->addField([
             'id' => [
                 'type' => 'int',
