@@ -35,7 +35,7 @@ class AuthServiceChatwoot
 
                 if ($user) {
                     // Configura a sessão do usuário
-                    $this->setUserSession($user, $company['company']);
+                    $this->setUserSession($user, $company['company'], $company['id_admin']);
                     return session('user');
                 }
 
@@ -57,7 +57,7 @@ class AuthServiceChatwoot
      */
     protected function findCompany($id_chatwoot, $apiDashboard)
     {
-        return $this->mCompany->select('id, company')
+        return $this->mCompany->select('id, company', 'id_admin')
             ->where('id_chatwoot', $id_chatwoot)
             ->where('api_key_chatwoot', $apiDashboard)
             ->first();
@@ -84,7 +84,7 @@ class AuthServiceChatwoot
      * @param string $companyName
      * @return void
      */
-    protected function setUserSession($userData, $companyName)
+    protected function setUserSession($userData, $companyName, $admin)
     {
         session()->set([
             "user" => [
@@ -92,6 +92,7 @@ class AuthServiceChatwoot
                 'name' => $userData['name'],
                 'email' => $userData['email'],
                 'id' => intval($userData['id']),
+                'admin' => intval($admin),
                 'company' => $companyName
             ]
         ]);
