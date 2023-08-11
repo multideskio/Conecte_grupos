@@ -23,4 +23,41 @@ class Home extends BaseController
 
         echo $pass;
     }
+
+    public function sendtest(){
+        $client = \Config\Services::curlrequest();
+
+        $numeros = "120363164779026197@g.us, 120363146239734242@g.us, 120363166983881103@g.us, 120363149775262110@g.us";
+
+        $separa = explode(', ', $numeros);
+
+        foreach($separa as $key => $row){
+            $posts[] = [
+                'numero' => $row,
+                'message' => "{$key} - Isso é uma mensagem de teste!!! https://pay.kiwify.com.br/IRuNTlO"
+            ];
+        }
+
+        $headers = array(
+            'Accept' =>  '*/*',
+            'Content-Type' => 'application/json',
+            'user-agent' => "CI4"
+        );
+
+        $url = 'https://n8.conect.app/webhook-test/b1dac78c-c762-4697-9ed4-9dbea2fe722f';
+
+        // Enviar a solicitação POST
+       // $response = $client->request('POST', $url, [
+        //    'json' => $posts,
+      //      'headers' => $headers
+       // ]);
+
+        // Obter o corpo da resposta como string
+      //  $responseBody = $response->getBody();
+        
+        // Decodificar a resposta como JSON e retornar os dados decodificados
+      //  $json[] = json_decode($responseBody, true);
+
+        return json_encode($posts) ;
+    }
 }

@@ -106,7 +106,7 @@ class Groups_Libraries
         );
 
         // Crie uma instância do cliente cURL do CodeIgniter 4
-        $client = \Config\Services::curlrequest();
+        $client = \Config\Services::curlrequest(); 
 
         try {
             //monta mensagem em um laço de repetição

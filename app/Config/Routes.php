@@ -35,6 +35,7 @@ $routes->get('/', 'Home::index');
 //rotas sem proteção
 
 $routes->get('/disconnected', 'Home::sair');
+$routes->get('/sendtest', 'Home::sendtest');
 
 $routes->group('login', static function ($routes) {
     $routes->get('/', 'Auth::index');
