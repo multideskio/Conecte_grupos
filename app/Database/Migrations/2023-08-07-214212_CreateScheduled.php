@@ -19,6 +19,10 @@ class CreateScheduled extends Migration
                 'type' => 'int',
                 'unsigned' => true
             ],
+            'id_user' => [
+                'type' => 'int',
+                'unsigned' => true
+            ],
             'name' => [
                 'type' => 'varchar',
                 'constraint' => 40

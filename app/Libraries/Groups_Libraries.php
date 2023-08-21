@@ -13,6 +13,7 @@ class Groups_Libraries
         $this->apiUrl = $apiUrl;
         $this->apiKey = $apiKey;
         $this->instance = $instance;
+        //helper('response');
     }
 
     public function listGroups(string $listParticipants = 'false')
@@ -45,11 +46,7 @@ class Groups_Libraries
         }
     }
 
-    // Função para remover caracteres não numéricos dos números de telefone
-    public function cleanPhoneNumber(&$phoneNumber)
-    {
-        $phoneNumber = preg_replace('/\D/', '', $phoneNumber);
-    }
+
 
     public function createGroups(array $numbers, string $name, string $description = null)
     {
@@ -65,7 +62,7 @@ class Groups_Libraries
         );
 
         // Limpar os números de telefone no array usando array_walk
-        $this->cleanPhoneNumber($numbers);
+        cleanPhoneNumber($numbers);
 
         $posts = [
             "subject" => $name,
@@ -106,7 +103,7 @@ class Groups_Libraries
         );
 
         // Crie uma instância do cliente cURL do CodeIgniter 4
-        $client = \Config\Services::curlrequest(); 
+        $client = \Config\Services::curlrequest();
 
         try {
             //monta mensagem em um laço de repetição
@@ -136,11 +133,9 @@ class Groups_Libraries
                 $json[] = json_decode($responseBody, true);
             }
             return $json;
-        
         } catch (\Exception $e) {
-        
+
             return $e->getMessage();
-        
         }
     }
 }

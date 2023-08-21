@@ -33,13 +33,48 @@ $routes->get('/', 'Home::index');
 //$routes->get('/groups', 'Home::groups');
 
 //rotas sem proteção
+$routes->get('teste', 'Home::teste');
 
-$routes->get('/disconnected', 'Home::sair');
-$routes->get('/sendtest', 'Home::sendtest');
+$routes->get('disconnected', 'Home::sair');
+$routes->get('sendtest',     'Home::sendtest');
+$routes->get('lang/{locale}', 'Home::lang');
 
+//grupo login
 $routes->group('login', static function ($routes) {
     $routes->get('/', 'Auth::index');
+    $routes->post('/', 'Auth::auth');
+    $routes->get('signup', 'Auth::signup');
+    $routes->post('signup', 'Auth::newuser');
 });
+
+
+
+
+//dashboard 
+$routes->get('dashboard/block', 'Dashboard::block', ['filter' => \App\Filters\LoggedIn::class]);
+
+$routes->group('dashboard', ['filter' => [\App\Filters\LoggedIn::class, \App\Filters\PlanFilter::class]], static function ($routes) {
+    //menu
+    $routes->get('', 'Dashboard::index');
+    $routes->get('campaigns', 'Dashboard::campaigns');
+    $routes->get('instances', 'Dashboard::instance');
+    $routes->get('tasks', 'Dashboard::tasks');
+    $routes->get('leads', 'Dashboard::leads');
+    $routes->get('synchronize', 'Dashboard::synchronize');
+    $routes->get('support', 'Dashboard::support');
+    $routes->get('help', 'Dashboard::help');
+
+    //perfil
+    $routes->get('profile', 'Dashboard::index');
+    $routes->get('config', 'Dashboard::index');
+    $routes->get('plan', 'Dashboard::index');
+    
+    //acoes
+    $routes->get('block', 'Dashboard::block');
+    
+});
+
+
 
 //chatwoot frontend
 $routes->group('chatwoot', ['filter' => 'loggedchatwoot', 'namespace' => 'App\Controllers\Chatwoot'], static function ($routes) {
@@ -50,27 +85,38 @@ $routes->group('chatwoot', ['filter' => 'loggedchatwoot', 'namespace' => 'App\Co
 });
 
 //API'S
-use API\Admin;
-use API\Contacts;
-use API\Config;
-use API\Groups;
-use API\Instances;
-use API\Users;
 
-$routes->get('api/v1/auth/(:any)/(:any)', 'API\Users::auth/$1/$2'); 
+use API\Admin as APIAdmin;
+use API\Campaigns as APICampaigns;
+use API\Config as APIConfig;
+use API\Contacts as APIContacts;
+use API\Groups as APIGroups;
+use API\Instances as APIInstances;
+use API\Users as APIUsers;
+
+$routes->get('api/v1/auth/(:any)/(:any)', 'API\Users::auth/$1/$2');
 
 $routes->group('api/v1', ['filter' => 'logged'], static function ($routes) {
-    $routes->resource('admin',     ['controller' => Admin::class]);     //
-    $routes->resource('contacts',  ['controller' => Contacts::class]);  //
-    $routes->resource('config',    ['controller' => Config::class]);    //
+    $routes->resource('admin',     ['controller' => APIAdmin::class]);     //
+    $routes->resource('contacts',  ['controller' => APIContacts::class]);  //
+    $routes->resource('config',    ['controller' => APIConfig::class]);    //
+    $routes->resource('campaigns', ['controller' => APICampaigns::class]);
 
     $routes->group('groups', ['namespace' => 'App\Controllers'], static function ($routes) {
-        $routes->resource('',    ['controller' => Groups::class]);
+        $routes->resource('',    ['controller' => APIGroups::class]);
         $routes->post('send', 'API\Groups::sendMessage');
     });    //
-    $routes->resource('instances', ['controller' => Instances::class]); //
-    $routes->resource('users',     ['controller' => Users::class]);     //
-        //
+
+    $routes->resource('instances', ['controller' => APIInstances::class]); //
+    $routes->group('instances', static function ($routes) {
+        $routes->post('disconnect', 'API\Instances::disconnect'); //
+        $routes->post('restart', 'API\Instances::restart'); //
+        $routes->post('conectar', 'API\Instances::conectar'); //
+    });
+
+    $routes->resource('users',     ['controller' => APIUsers::class]);     //
+    
+    //
 });
 
 

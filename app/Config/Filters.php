@@ -16,14 +16,14 @@ class Filters extends BaseConfig
      * make reading things nicer and simpler.
      */
     public array $aliases = [
-        'csrf'          => CSRF::class,
-        'toolbar'       => DebugToolbar::class,
-        'honeypot'      => Honeypot::class,
-        'invalidchars'  => InvalidChars::class,
-        'secureheaders' => SecureHeaders::class,
-        'logged' => \App\Filters\LoggedIn::class,
+        'csrf'           => CSRF::class,
+        'toolbar'        => DebugToolbar::class,
+        'honeypot'       => Honeypot::class,
+        'invalidchars'   => InvalidChars::class,
+        'secureheaders'  => SecureHeaders::class,
+        'logged'         => \App\Filters\LoggedIn::class,
         'loggedchatwoot' => \App\Filters\LoggedInChatwoot::class,
-        'cors' => \App\Filters\Cors::class
+        'cors'           => \App\Filters\Cors::class
         
     ];
 

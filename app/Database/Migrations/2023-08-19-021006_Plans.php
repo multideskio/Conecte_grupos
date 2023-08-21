@@ -4,11 +4,14 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateUsersInstanceCompany extends Migration
+class Plans extends Migration
 {
     public function up()
     {
-        //RELACIONA INSTANCIAS COM USUÁRIOS E EMPRESAS
+
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
+        //
         $this->forge->addField([
             'id' => [
                 'type' => 'int',
@@ -23,9 +26,25 @@ class CreateUsersInstanceCompany extends Migration
                 'type' => 'int',
                 'unsigned' => true
             ],
-            'id_instance' => [
+            'num_instance' => [
                 'type' => 'int',
-                'unsigned' => true
+                'constraint' => 2
+            ],
+            'valid_days' => [
+                'type' => 'int',
+                'unsigned' => 3
+            ],
+            'payday' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'price' => [
+                'type' => 'DECIMAL',
+                'constraint' => '10,2'
+            ],
+            'status' => [
+                'type' => 'bool',
+                'DEFAULT' => true
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -40,18 +59,19 @@ class CreateUsersInstanceCompany extends Migration
                 'null' => true,
             ]
         ]);
-
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('id_user', 'users', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('id_instance', 'instances', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('instance_user_company', true);
+        $this->forge->createTable('plans', true);
+        $db->enableForeignKeyChecks();
+
+        $seeder = \Config\Database::seeder();
+        $seeder->call('SuperAdmin');
     }
 
     public function down()
     {
-        //
-        $this->forge->dropTable('instance_user_company', true);
-
+        ////
+        $this->forge->dropTable('plans', true);
     }
 }

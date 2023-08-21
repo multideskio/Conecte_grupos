@@ -36,7 +36,7 @@ abstract class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = [];
+    protected $helpers = ['form', 'cookie'];
 
     /**
      * Be sure to declare properties for any property fetch you initialized.
@@ -54,5 +54,8 @@ abstract class BaseController extends Controller
 
         // Preload any models, libraries, etc, here.
         $this->session = \Config\Services::session();
+        $language      = \Config\Services::language();
+
+        $language->setLocale($this->session->lang);
     }
 }

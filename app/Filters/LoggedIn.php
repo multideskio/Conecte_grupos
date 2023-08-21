@@ -28,7 +28,7 @@ class LoggedIn implements FilterInterface
         //
         $loggedSession = session('user');
 
-        if(!isset($loggedSession['isConnected']) && isset($loggedSession['isConnectedSuper'])){
+        if (!isset($loggedSession['isConnected'])) {
             return redirect()->to('login');
         }
     }

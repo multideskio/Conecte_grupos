@@ -28,6 +28,10 @@ class CreateGroups extends Migration
                 'constraint' => 30,
                 'null' => false
             ],
+            'id_user' => [
+                'type' => 'int',
+                'unsigned' => true
+            ],
             'name' => [
                 'type' => 'varchar',
                 'constraint' => 20,

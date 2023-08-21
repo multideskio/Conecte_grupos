@@ -4,21 +4,27 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class InstanceUserCompanyModel extends Model
+class PlanModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'instance_user_company';
+    protected $table            = 'plans';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
+    protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_company', 'id_user', 'id_instance'
+        'id_company',
+        'id_user',
+        'num_instance',
+        'valid_days',
+        'payday',
+        'price',
+        'status'
     ];
 
     // Dates
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';

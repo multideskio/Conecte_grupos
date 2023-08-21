@@ -11,10 +11,19 @@ class InstanceModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = true;
+    protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_superadmin', 'name', 'url_api_wa', 'wa_number', 'api_key_wa'
+        'id_company',
+        'name',
+        'phone',
+        'profile_name',
+        'profile_picture_url',
+        'profile_status',
+        'status',
+        'server_url',
+        'api_key',
+        'owner' 
     ];
 
     // Dates
@@ -40,4 +49,15 @@ class InstanceModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+
+    public function controlAccess(){
+        if(session('')['']){
+
+        }else{
+
+        }
+
+        return $this->findAll();
+    }
 }

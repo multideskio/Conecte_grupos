@@ -28,6 +28,10 @@ class CreateSends extends Migration
                 'constraint' => '80',
                 'null' => false
             ],
+            'id_user' => [
+                'type' => 'int',
+                'unsigned' => true
+            ],
             'message' => [
                 'type' => 'text',
                 'null' => true

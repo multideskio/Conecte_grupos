@@ -17,7 +17,7 @@ class App extends BaseConfig
      *
      *    http://example.com/
      */
-    public string $baseURL = 'https://grupos.conect.app';
+    public string $baseURL = 'https://g.multidesk.io';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
@@ -83,7 +83,7 @@ class App extends BaseConfig
      *
      * If false, no automatic detection will be performed.
      */
-    public bool $negotiateLocale = false;
+    public bool $negotiateLocale = true;
 
     /**
      * --------------------------------------------------------------------------
@@ -98,7 +98,7 @@ class App extends BaseConfig
      *
      * @var string[]
      */
-    public array $supportedLocales = ['en'];
+    public array $supportedLocales = ['en', 'pt-BR'];
 
     /**
      * --------------------------------------------------------------------------
@@ -455,5 +455,5 @@ class App extends BaseConfig
      *
      * Especifique aqui a versão do seu sistema.
      */
-    public string $version = '1.0.0';
+    //public string $version = '1.0.0';
 }

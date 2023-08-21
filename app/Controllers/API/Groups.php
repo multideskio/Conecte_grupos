@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Libraries\Groups_Libraries;
+use App\Services\GroupService;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
 
@@ -24,6 +25,8 @@ class Groups extends ResourceController
     
     public function index($instancia = false)
     {
+        $listGroups = new GroupService('64e1b07d5b16d_instance_1');
+        return $this->respond($listGroups->listGroups(true));
     }
 
     /**
@@ -35,7 +38,7 @@ class Groups extends ResourceController
     {
         //
         $groups = new Groups_Libraries('https://noreply.conect.app', '9070AC39-C742-4134-87EE-03365594ABF1', 'whatsapp');
-        return $this->respond($groups->listGroups('false'));
+        return $this->respond($groups->listGroups());
     }
 
     /**

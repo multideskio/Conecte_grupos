@@ -2,64 +2,121 @@
 
 namespace App\Services;
 
-use App\Models\SuperModel;
 use App\Models\CompanyModel;
+use App\Models\PlanModel;
+use App\Models\SuperModel;
+use App\Models\UserModel;
 
 class AuthService
 {
-    public function authenticate($id_chatwoot, $apiDashboard)
+    protected $inputs;
+    protected $userModel;
+
+    public function __construct($inputs, UserModel $userModel)
     {
-        // Instancia o modelo SuperModel para verificar a validade do apiDashboard
-        $superModel = new SuperModel();
-        $isValidApiDashboard = $this->validateApiDashboard($superModel, $apiDashboard);
+        $this->inputs = $inputs;
+        $this->userModel = $userModel;
+        helper('response');
+    }
 
-        if ($isValidApiDashboard) {
-            // Instancia o modelo CompanyModel para buscar os dados da empresa
-            $companyModel = new CompanyModel();
-            $companyData = $this->findCompanyData($companyModel, $id_chatwoot);
-
-            if ($companyData) {
-                // Define uma sessão autenticada com os dados da empresa
-                $this->setAuthenticatedSession($companyData);
-                // Retorna o ID da sessão como resposta
-                return session('user');
-            } else {
-                // Lança uma exceção se não for encontrada uma empresa correspondente
-                throw new \Exception('Acesso não autorizado: Empresa não encontrada.');
-            }
-        } else {
-            // Lança uma exceção se o apiDashboard não for válido
-            throw new \Exception('Acesso não autorizado: Painel de API inválido.');
+    public function authenticate()
+    {
+        // Verificar se os campos foram preenchidos
+        if (empty($this->inputs['username'])) {
+            throw new \Exception(lang('General.errosLogin.notEmail'));
         }
-    }
 
-    // Verifica se o apiDashboard é válido usando o modelo SuperModel
-    private function validateApiDashboard($superModel, $apiDashboard)
-    {
-        $countAll = $superModel->select('apikey')->where('apikey', $apiDashboard)->countAllResults();
-        // Retorna verdadeiro se o apiDashboard for válido (contagem maior que zero)
-        return $countAll > 0;
-    }
+        if (empty($this->inputs['password'])) {
+            throw new \Exception(lang('General.errosLogin.notPassword'));
+        }
 
-    // Busca os dados da empresa com base no id_chatwoot usando o modelo CompanyModel
-    private function findCompanyData($companyModel, $id_chatwoot)
-    {
-        $companyData = $companyModel->select("name, email, id, company")->where('id_chatwoot', $id_chatwoot)->first();
-        // Retorna os dados da empresa ou nulo se não for encontrada
-        return $companyData;
-    }
+        $email    = $this->inputs['username'];
+        $password = $this->inputs['password'];
+        $remember = !empty($this->inputs['remember']) ? 1 : 0;
 
-    // Define uma sessão autenticada com os dados da empresa
-    private function setAuthenticatedSession($companyData)
+        // Buscar usuário pelo email
+        $user = $this->userModel->where('email', $email)->first();
+
+        if (!$user) {
+            throw new \Exception(lang('General.errosLogin.errorEmail'));
+        }
+
+        // Comparar a senha usando o hash armazenado no banco de dados
+        if (!password_verify($password, $user['password'])) {
+            throw new \Exception(lang('General.errosLogin.errorPassword'));
+        }
+
+        if ($remember) {
+            // Configurar cookies para login automático
+            set_cookie('user_email', $email, 60 * 60 * 24 * 30);
+            set_cookie('user_token', password_hash($user['token'], PASSWORD_BCRYPT), 60 * 60 * 24 * 30);
+            set_cookie('user_auto', $remember, 60 * 60 * 24 * 30);
+        } else {
+            // Remover cookies de login automático
+            delete_cookie('user_email');
+            delete_cookie('user_token');
+            delete_cookie('user_auto');
+        }
+
+        $verifyPlan = $this->verifyPlan($user['id_company']);
+        //Retorna dados do super admin
+        $mCompany = new CompanyModel();
+        $id = $mCompany->select('id_admin')->find($user['id_company']);
+        // Preparar dados para a sessão
+        $dataSession = [
+            'isConnected' => true,
+            'id' => intval($user['id']),
+            'company' => intval($user['id_company']),
+            'name' => $user['name'],
+            'fone' => $user['wa_number'],
+            'email' => $user['email'],
+            'permission' => intval($user['permission']),
+            'status' => intval($user['status']),
+            'image' => $user['image'] ?: null,
+            'control' => $id['id_admin'],
+            'daysRemaining' => $verifyPlan
+        ];
+
+        // Gravar dados na sessão
+        session()->set(['user' => $dataSession]);
+
+        // Autenticação bem-sucedida
+        return true;
+    }
+    private function verifyPlan($company)
     {
-        session()->set([
-            "user" => [
-                'isConnected' => true,
-                'name' => $companyData['name'],
-                'email' => $companyData['email'],
-                'id' => intval($companyData['id']),
-                'company' => $companyData['company']
-            ]
-        ]);
+        $mPlan = new PlanModel();
+
+        $build   = $mPlan->where('id_company', $company)->findAll();
+
+        if (count($build) == 0) {
+            throw new \Exception(lang('Validation.plan.0'));
+        }
+
+        if (count($build) > 1) {
+            throw new \Exception(lang('Validation.plan.1', ['idCompany' => $company]));
+        }
+
+        $row = $build[0];
+
+        // Exemplo de uso
+        $dataCompra = $row['payday'];
+        $diasParaAdicionar = $row['valid_days'];
+
+        /*session()->set(['user' => [
+            'vencimento' => add_days_to_purchase_date($dataCompra, $diasParaAdicionar),
+        ]]);*/
+        
+        $dataValidade = add_days_to_purchase_date($dataCompra, $diasParaAdicionar);
+        
+        if (is_plan_expired($dataValidade)) {
+            throw new \Exception(lang('Validation.plan.vencido.0'));
+        }
+        
+        return days_until_expiry($dataValidade);
+    }
+    
+    public function createAccount()
+    {
     }
 }

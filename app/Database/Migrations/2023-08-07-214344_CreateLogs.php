@@ -8,6 +8,9 @@ class CreateLogs extends Migration
 {
     public function up()
     {
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
+        
         //LOGS DE TUDO QUE ACONTECE
         $this->forge->addField([
             'id' => [
@@ -43,13 +46,15 @@ class CreateLogs extends Migration
 
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('id_user', 'users', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('stories', true);
+        $this->forge->addForeignKey('id_user', 'users', 'id', 'NO ACTION', 'NO ACTION');
+        $this->forge->createTable('log_users', true);
+        
+        $db->enableForeignKeyChecks();
     }
 
     public function down()
     {
         //
-        $this->forge->dropTable('stories', true);
+        $this->forge->dropTable('log_users', true);
     }
 }

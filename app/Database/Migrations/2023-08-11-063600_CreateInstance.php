@@ -15,23 +15,50 @@ class CreateInstance extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'id_superadmin' => [
+            'id_company' => [
                 'type' => 'int',
                 'unsigned' => true
             ],
             'name' => [
                 'type' => 'varchar',
-                'constraint' => '60'
+                'constraint' => '60',
+                'null' => true
             ],
-            'url_api_wa' => [
+            'phone' => [
+                'type' => 'varchar',
+                'constraint' => '15',
+                'null' => true
+            ],
+            'owner' => [
+                'type' => 'varchar',
+                'constraint' => '30',
+                'null' => true
+            ],
+            'profile_name' => [
+                'type' => 'varchar',
+                'constraint' => '60',
+                'null' => true
+            ],
+            'profile_picture_url' => [
+                'type' => 'varchar',
+                'constraint' => '255',
+                'null' => true
+            ],
+            'profile_status' => [
+                'type' => 'varchar',
+                'constraint' => '255',
+                'null' => true
+            ],
+            'status' => [
+                'type' => 'varchar',
+                'constraint' => '60',
+                'null' => true
+            ],
+            'server_url' => [
                 'type' => 'varchar',
                 'constraint' => '60'
             ],
-            'wa_number' => [
-                'type' => 'varchar',
-                'constraint' => '15'
-            ],
-            'api_key_wa' => [
+            'api_key' => [
                 'type' => 'varchar',
                 'constraint' => '60'
             ],
@@ -50,7 +77,7 @@ class CreateInstance extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
-        $this->forge->addForeignKey('id_superadmin', 'superadmin', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('instances', true);
     }
 
