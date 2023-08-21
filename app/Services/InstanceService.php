@@ -156,12 +156,15 @@ class InstanceService
     {
         $apiResponse = $this->searchApi();
         $dataToUpdate = [];
+
         foreach ($apiResponse as $item) {
             if (isset($item['instance']['instanceName'])) {
+                $owner = isset($item['instance']['owner']) ? $item['instance']['owner'] : null;
+
                 $dataToUpdate[] = [
                     'name'                => $item['instance']['instanceName'],
-                    'phone'               => ($item['instance']['owner']) ? cleanPhoneNumber($item['instance']['owner']) : null,
-                    'owner'               => $item['instance']['owner'] ?? null,
+                    'phone'               => !empty($owner) ? cleanPhoneNumber($owner) : null,
+                    'owner'               => $owner,
                     'profile_name'        => $item['instance']['profileName'] ?? null,
                     'profile_picture_url' => $item['instance']['profilePictureUrl'] ?? null,
                     'profile_status'      => $item['instance']['profileStatus'] ?? null,
@@ -169,6 +172,7 @@ class InstanceService
                 ];
             }
         }
+
         $this->instanceModel->updateBatch($dataToUpdate, 'name');
     }
 
@@ -180,8 +184,8 @@ class InstanceService
         // Implemente a lógica para excluir instâncias, se necessário.
     }
 
-   
-   
+
+
     public function disconnect(array $input): array
     {
         // Monta a URL da API para desconectar a instância
