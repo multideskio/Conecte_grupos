@@ -160,7 +160,7 @@ class InstanceService
             if (isset($item['instance']['instanceName'])) {
                 $dataToUpdate[] = [
                     'name'                => $item['instance']['instanceName'],
-                    'phone'               => cleanPhoneNumber($item['instance']['owner']) ?? null,
+                    'phone'               => ($item['instance']['owner']) ? cleanPhoneNumber($item['instance']['owner']) : null,
                     'owner'               => $item['instance']['owner'] ?? null,
                     'profile_name'        => $item['instance']['profileName'] ?? null,
                     'profile_picture_url' => $item['instance']['profilePictureUrl'] ?? null,
