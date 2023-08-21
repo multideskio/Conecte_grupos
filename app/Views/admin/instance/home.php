@@ -124,7 +124,7 @@
             $('#syncButton').prop('disabled', true);
             $.ajax({
                 type: "POST",
-                url: baseUrl + `/api/v1/instances/${actionType}`,
+                url: baseUrl + `api/v1/instances/${actionType}`,
                 data: {
                     instance: instance,
                     apikey: apikey
