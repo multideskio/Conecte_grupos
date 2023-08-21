@@ -180,6 +180,8 @@ class InstanceService
         // Implemente a lógica para excluir instâncias, se necessário.
     }
 
+   
+   
     public function disconnect(array $input): array
     {
         // Monta a URL da API para desconectar a instância
@@ -208,6 +210,9 @@ class InstanceService
             return ['error' => 'Erro na requisição'];
         }
     }
+
+
+
 
     public function restart(array $input): array
     {

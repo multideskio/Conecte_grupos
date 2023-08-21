@@ -118,16 +118,19 @@ class Instances extends ResourceController
     }
 
     public function disconnect(){
+
         $input = $this->request->getVar();
-
         $sInstance = new InstanceService;
-
         try{
+
             $sDisconnect = $sInstance->disconnect($input);
-            $sInstance->verifyPlan();
+            //$sInstance->verifyPlan();
             return $this->respond($sDisconnect);
+        
         }catch(\Exception $e){
+        
             return $this->fail($e->getMessage());
+        
         }
     }
 
