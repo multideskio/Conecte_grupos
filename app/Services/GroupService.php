@@ -2,25 +2,38 @@
 
 namespace App\Services;
 
+use App\Models\CompanyGroupsModel;
+use App\Models\GroupModel;
 use App\Models\InstanceModel;
+use App\Models\ParticipantModel;
 
 class GroupService
 {
 
     protected $instanceModel;
     protected $instance;
+    protected $groupModel;
+    protected $companyGroupsModel;
+    protected $participantModel;
+    protected $idCompany;
 
-    public function __construct($nameInstance)
+    public function __construct($nameInstance, $idCompany)
     {
-        $this->instanceModel = new InstanceModel();
+        $this->idCompany = $idCompany;
+        $this->companyGroupsModel = new CompanyGroupsModel();
+        $this->groupModel         = new GroupModel();
+        $this->instanceModel      = new InstanceModel();
+        $this->participantModel   = new ParticipantModel();
+
         $this->instance = $this->instanceModel->where('name', $nameInstance)->findAll();
     }
 
-    public function listGroups($listParticipants = 'false')
+    public function listGroups($listParticipants = false)
     {
-        try {
+        $participants = ($listParticipants) ? 'true' : 'false';
 
-            $apiUrl = "{$this->instance[0]['server_url']}/group/fetchAllGroups/{$this->instance[0]['name']}?getParticipants=false";
+        $apiUrl = "{$this->instance[0]['server_url']}/group/fetchAllGroups/{$this->instance[0]['name']}?getParticipants=true";
+        try {
 
             // Definir os cabeçalhos da requisição
             $headers = [
@@ -28,21 +41,165 @@ class GroupService
                 'apikey'       => $this->instance[0]['api_key'],
                 'Content-Type' => 'application/json',
             ];
-            
+
             // Crie uma instância do cliente cURL do CodeIgniter 4
             $httpClient = \Config\Services::curlrequest();
 
             $response = $httpClient->request('GET', $apiUrl, [
                 'headers' => $headers,
             ]);
-    
-            $apiResponse = json_decode($response->getBody(), true);
+            $groupsData = json_decode($response->getBody(), true);
 
-            return $apiResponse;
-            
+            $this->insertOrUpdateGroups($groupsData);
         } catch (\Exception $e) {
-            // Lidar com erros, como autorização (erro 401)
+            // Lidar com erros
             return ['error' => $e->getMessage(), 'url' => $apiUrl, 'apikey' => $this->instance[0]['api_key']];
+        }
+    }
+
+
+    private function insertOrUpdateGroups($groupsData)
+    {
+        $groupDataRelation = [];
+
+        foreach ($groupsData as $group) {
+            $existingGroup = $this->groupModel
+                ->where('id_group', $group['id'])
+                ->where('instance', $this->instance[0]['id'])
+                ->findAll();
+            if (count($existingGroup)) {
+                $groupDataIsert = [
+                    'id'            => $existingGroup[0]['id'],
+                    'instance'      => $this->instance[0]['id'],
+                    'id_group'      => $group['id'],
+                    'subject'       => $group['subject'] ?? null,
+                    'subject_owner' => $group['subjectOwner'] ?? null,
+                    'subject_time'  => $group['subjectTime'] ?? null,
+                    'size'          => $group['size'] ?? null,
+                    'creation'      => $group['creation'] ?? null,
+                    'owner'         => $group['owner'] ?? null,
+                    'desc'          => $group['desc'] ?? null,
+                    'descId'        => $group['descId'] ?? null,
+                    'restrict'      => $group['restrict'] ?? null,
+                    'announce'      => $group['announce'] ?? null,
+                ];
+                $updateData[] = $groupDataIsert;
+            } else {
+                $groupData = [
+                    'instance'      => $this->instance[0]['id'],
+                    'id_group'      => $group['id'],
+                    'subject'       => $group['subject'] ?? null,
+                    'subject_owner' => $group['subjectOwner'] ?? null,
+                    'subject_time'  => $group['subjectTime'] ?? null,
+                    'size'          => $group['size'] ?? null,
+                    'creation'      => $group['creation'] ?? null,
+                    'owner'         => $group['owner'] ?? null,
+                    'desc'          => $group['desc'] ?? null,
+                    'descId'        => $group['descId'] ?? null,
+                    'restrict'      => $group['restrict'] ?? null,
+                    'announce'      => $group['announce'] ?? null,
+                ];
+                $insertData[] = $groupData;
+            }
+            // Store group data for later participant insertion
+            $groupDataRelation[] = $group;
+        }
+
+        if (!empty($insertData)) {
+            $this->groupModel->insertBatch($insertData);
+        }
+
+        if (!empty($updateData)) {
+            $this->groupModel->updateBatch($updateData, 'id');
+        }
+
+        $this->relateGroupsToCompanies($groupDataRelation, $this->idCompany);
+    }
+
+
+
+
+    private function relateGroupsToCompanies($groupsData, $companyId)
+    {
+        $dataIn = [];
+
+        foreach ($groupsData as $group) {
+            $existingRelationship = $this->companyGroupsModel
+                ->where('id_group', $group['id'])
+                ->where('id_company', $companyId)
+                ->countAllResults();
+
+            if (!$existingRelationship) {
+                $dataIn[] = [
+                    'id_group' => $group['id'],
+                    'id_company' => $companyId
+                ];
+            }
+        }
+
+        if (!empty($dataIn)) {
+            $this->companyGroupsModel->insertBatch($dataIn);
+        }
+
+        // Insert participants
+        $groupId = [];
+        $participants = [];
+
+        foreach ($groupsData as $group) {
+            $groupId[]      = $group['id'];
+            $participants[] = $group['participants'] ?? [];
+        }
+
+        $this->insertOrUpdateParticipants($participants, $groupId);
+    }
+
+
+
+
+
+    private function insertOrUpdateParticipants($participantsData, $groupIds)
+    {
+        $dataParticipants = [];
+
+        // Coletar todos os IDs de participantes
+        $participantIds = [];
+        foreach ($participantsData as $participants) {
+            foreach ($participants as $participant) {
+                $participantIds[] = $participant['id'];
+            }
+        }
+
+        // Verificar a existência de participantes
+        $existingParticipants = $this->participantModel
+            ->whereIn('participant', $participantIds)
+            ->where('id_company', $this->idCompany)
+            ->findAll();
+
+        // Criar um índice associativo para os participantes existentes para facilitar a verificação
+        $existingParticipantsMap = [];
+        foreach ($existingParticipants as $existingParticipant) {
+            $existingParticipantsMap[$existingParticipant['participant']] = true;
+        }
+
+        // Verificar e preparar os dados para inserção
+        foreach ($participantsData as $groupIndex => $participants) {
+            foreach ($participants as $participant) {
+                $participantId = $participant['id'];
+
+                if (!isset($existingParticipantsMap[$participantId])) {
+                    $dataParticipants[] = [
+                        'id_company'  => $this->idCompany,
+                        'id_group'    => $groupIds[$groupIndex],
+                        'participant' => $participantId,
+                        'admin'       => $participant['admin']
+                    ];
+                }
+            }
+        }
+
+        // Inserir os participantes no banco de dados, se houver dados a serem inseridos
+        if (!empty($dataParticipants)) {
+            $this->participantModel->insertBatch($dataParticipants);
         }
     }
 }

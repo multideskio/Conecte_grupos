@@ -69,9 +69,9 @@
               </div>
               <div class="card-footer text-center m-0 p-0">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                  <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#novaCampanaModal">Criar Campanha</button>
-                  <button type="button" class="btn btn-dark">Agendar mensagem</button>
-                  <button type="button" class="btn btn-dark">Enviar mensagem</button>
+                  <a href="${baseUrl}dashboard/campaigns/${data.name}" class="btn btn-dark">Criar Campanha</a>
+                  <a href="${baseUrl}dashboard/schedule/${data.name}" class="btn btn-dark">Agendar mensagem</a>
+                  <a href="${baseUrl}dashboard/send/${data.name}" class="btn btn-dark">Enviar mensagem</a>
                 </div>
               </div>
             </div>

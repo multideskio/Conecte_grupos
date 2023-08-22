@@ -21,11 +21,13 @@ class Groups extends ResourceController
     public function __construct()
     {
         $this->session = $this->session = \Config\Services::session();
+
+        helper('response');
     }
     
     public function index($instancia = false)
     {
-        $listGroups = new GroupService('64e1b07d5b16d_instance_1');
+        $listGroups = new GroupService('whatsapp', session('user')['company']);
         return $this->respond($listGroups->listGroups(true));
     }
 
@@ -37,8 +39,12 @@ class Groups extends ResourceController
     public function show($id = null)
     {
         //
-        $groups = new Groups_Libraries('https://noreply.conect.app', '9070AC39-C742-4134-87EE-03365594ABF1', 'whatsapp');
-        return $this->respond($groups->listGroups());
+        $listGroups = new GroupService($id, session('user')['company']);
+        
+        //echo "<pre>";
+        print_r($listGroups->listGroups(true));
+        
+        //return $this->respond($listGroups->listGroups(true));
     }
 
     /**
@@ -99,16 +105,31 @@ class Groups extends ResourceController
     public function sendMessage()
     {
         $posts = $this->request->getPost();
-        $listaDestino = explode(', ', $posts['destino']);
-        $groups = new Groups_Libraries('https://noreply.conect.app', '9070AC39-C742-4134-87EE-03365594ABF1', 'whatsapp');
+        $groups = new Groups_Libraries($posts['apiurl'], $posts['apikey'], $posts['instance']);
+        //echo getExtensionFromUrl($posts['archive']);
+        //echo "<pre>"; print_r($posts);
         try {
-            $sends = $groups->sendMessage($listaDestino, $posts['message'], (isset($posts['mentions'])) ? true : false);
-            return $this->respond(['code' => 200, 'status' => 'ok', 'sends' => $sends]);
+            $sends = $groups->sendMessage($posts['groups'], $posts['message'], $posts['archive'], (isset($posts['mentions'])) ? true : false);
+            
+            //return $this->respond($sends);
+            return redirect()->back();
+
         } catch (\Exception $e) {
             return $this->fail($e->getMessage());
         }
     }
 
+    public function sincronize($instance = false){
 
-    
+        $groupService = new GroupService($instance, session('user')['company']);
+        
+        try{
+            echo "<pre>";
+            print_r($groupService->listGroups());
+            //return $this->respond(['success']);
+            return redirect()->back();
+        }catch(\Exception $e){
+            return $this->fail($e->getMessage());
+        }
+    }
 }

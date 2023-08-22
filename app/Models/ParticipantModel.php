@@ -4,18 +4,16 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class GroupModel extends Model
+class ParticipantModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'groups';
+    protected $table            = 'participants';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'instance','id_group', 'subject', 'subject_owner', 'subject_time', 'size', 'creation', 'owner', 'restrict', 'announce', 'desc', 'desc_id'
-    ];
+    protected $allowedFields    = ['id_company', 'id_group', 'participant', 'admin'];
 
     // Dates
     protected $useTimestamps = true;

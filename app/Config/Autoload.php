@@ -45,6 +45,9 @@ class Autoload extends AutoloadConfig
     public $psr4 = [
         APP_NAMESPACE => APPPATH, // For custom app namespace
         'Config'      => APPPATH . 'Config',
+        'App'         => APPPATH,
+        'CodeIgniter' => SYSTEMPATH,
+        'App\Commands' => APPPATH . 'Commands', // Adicione esta linha
     ];
 
     /**

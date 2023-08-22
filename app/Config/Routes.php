@@ -56,7 +56,13 @@ $routes->get('dashboard/block', 'Dashboard::block', ['filter' => \App\Filters\Lo
 $routes->group('dashboard', ['filter' => [\App\Filters\LoggedIn::class, \App\Filters\PlanFilter::class]], static function ($routes) {
     //menu
     $routes->get('', 'Dashboard::index');
+
     $routes->get('campaigns', 'Dashboard::campaigns');
+    $routes->get('campaigns/(:any)', 'Dashboard::campaigns');
+    $routes->get('schedule/(:any)', 'Dashboard::campaigns');
+    $routes->get('send/(:any)', 'Dashboard::sendView/$1');
+
+
     $routes->get('instances', 'Dashboard::instance');
     $routes->get('tasks', 'Dashboard::tasks');
     $routes->get('leads', 'Dashboard::leads');
@@ -68,10 +74,9 @@ $routes->group('dashboard', ['filter' => [\App\Filters\LoggedIn::class, \App\Fil
     $routes->get('profile', 'Dashboard::index');
     $routes->get('config', 'Dashboard::index');
     $routes->get('plan', 'Dashboard::index');
-    
+
     //acoes
     $routes->get('block', 'Dashboard::block');
-    
 });
 
 
@@ -102,10 +107,12 @@ $routes->group('api/v1', ['filter' => 'logged'], static function ($routes) {
     $routes->resource('config',    ['controller' => APIConfig::class]);    //
     $routes->resource('campaigns', ['controller' => APICampaigns::class]);
 
+
     $routes->group('groups', ['namespace' => 'App\Controllers'], static function ($routes) {
-        $routes->resource('',    ['controller' => APIGroups::class]);
         $routes->post('send', 'API\Groups::sendMessage');
+        $routes->get('sincronize/(:any)', 'API\Groups::sincronize/$1');
     });    //
+    $routes->resource('groups',    ['controller' => APIGroups::class]);
 
     $routes->resource('instances', ['controller' => APIInstances::class]); //
     $routes->group('instances', static function ($routes) {
@@ -115,7 +122,7 @@ $routes->group('api/v1', ['filter' => 'logged'], static function ($routes) {
     });
 
     $routes->resource('users',     ['controller' => APIUsers::class]);     //
-    
+
     //
 });
 

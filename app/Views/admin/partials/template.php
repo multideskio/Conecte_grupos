@@ -3,6 +3,8 @@
 <head>
 
     <?php echo view('admin/partials/title-meta', array('title' => $title)); ?>
+    <?= $this->renderSection('cssLink') ?>
+
     <?= $this->include('admin/partials/head-css') ?>
     <?= $this->renderSection('css') ?>
 </head>
@@ -40,8 +42,6 @@
     </script>
     <?= $this->include('admin/partials/customizer') ?>
     <?= $this->include('admin/partials/vendor-scripts') ?>
-
-
     <?= $this->renderSection('js') ?>
     <!-- App js -->
 

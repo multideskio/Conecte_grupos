@@ -13,7 +13,7 @@ class Groups_Libraries
         $this->apiUrl = $apiUrl;
         $this->apiKey = $apiKey;
         $this->instance = $instance;
-        //helper('response');
+        helper(['whatsapp', 'response']);
     }
 
     public function listGroups(string $listParticipants = 'false')
@@ -89,53 +89,75 @@ class Groups_Libraries
         return json_decode($responseBody, true);
     }
 
-    public function sendMessage(array $listaDestino, string $message, bool $mentions = true): array
+    public function sendMessage(array $listaDestino, string $message, string $archive, bool $mentions = true): array
     {
+        $json = array(); // Inicializa a variável $json como um array vazio
 
-        $url = "{$this->apiUrl}/message/sendText/{$this->instance}";
-
-        //headers
         $headers = array(
-            'Accept' =>  '*/*',
+            'Accept' => '*/*',
             'apikey' => $this->apiKey,
             'Content-Type' => 'application/json',
             'user-agent' => "CI4"
         );
 
-        // Crie uma instância do cliente cURL do CodeIgniter 4
         $client = \Config\Services::curlrequest();
 
-        try {
-            //monta mensagem em um laço de repetição
-            foreach ($listaDestino as $destino) {
-                //monta mensagem
-                $posts = [
-                    "number" => $destino,
-                    "options" => [
-                        "delay" => 1200,
-                        "presence" => "composing",
-                        "mentions" => [
-                            "everyOne" => $mentions
-                        ]
-                    ],
-                    "textMessage" => [
-                        "text" => "{$message} \n\n\n " . date("d/m/Y H:i:s")
-                    ]
-                ];
-                // Enviar a solicitação POST
-                $response = $client->request('POST', $url, [
+
+        foreach ($listaDestino as $destino) {
+            if (!empty($archive)) {
+                // Lógica para determinar o tipo de arquivo e enviar mensagem correspondente
+                $extension = getExtensionFromUrl($archive);
+                switch ($extension) {
+                    case 'jpg':
+                    case 'png':
+                    case 'jpeg':
+                        $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
+                        $posts  = createImageMessage($destino, $message, $archive);
+                        break;
+                    case 'mp4':
+                        $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
+                        $posts  = createVideoMessage($destino, $message, $archive);
+                        break;
+                    case 'xlsx':
+                        $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
+                        $posts  = createXlsxDocumentMessage($destino, 'evolution-api.xlsx', $message, $archive);
+                        break;
+                    case 'zip':
+                        $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
+                        $posts  = createZipDocumentMessage($destino, 'preencher.zip', $message, $archive);
+                        break;
+                    case 'pdf':
+                        $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
+                        $posts  = createPdfDocumentMessage($destino, 'preencher.pdf', $message, $archive);
+                        break;
+                    case 'mp3':
+                    case 'ogg':
+                        $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
+                        $posts  = createAudioMessage($destino, $archive);
+                        break;
+                        // Adicione mais casos aqui para outros tipos de arquivo
+                    default:
+                        // Tipo de arquivo não suportado, pode adicionar uma lógica de erro aqui
+                        break;
+                }
+            } else {
+                $apiUrl = "{$this->apiUrl}/message/sendText/{$this->instance}";
+                $posts = createTextMessage($destino, $message, $mentions);
+            }
+
+            if (isset($posts)) {
+                $response = $client->request('POST', $apiUrl, [
                     'headers' => $headers,
                     'json' => $posts
                 ]);
-                // Obter o corpo da resposta como string
+
                 $responseBody = $response->getBody();
-                // Decodificar a resposta como JSON e retornar os dados decodificados
                 $json[] = json_decode($responseBody, true);
             }
-            return $json;
-        } catch (\Exception $e) {
-
-            return $e->getMessage();
         }
+
+        // Adicione aqui a lógica para o caso em que $archive é verdadeiro
+
+        return $posts;
     }
 }

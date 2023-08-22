@@ -40,16 +40,18 @@ if (!function_exists('cleanPhoneNumber')) {
 }
 
 
-if(!function_exists('randomSerial')){
-    function randomSerial(){
+if (!function_exists('randomSerial')) {
+    function randomSerial()
+    {
         $key = implode('-', str_split(bin2hex(random_bytes(10)), 5));
-        $res = $key ;
+        $res = $key;
         return $res;
     }
 }
 
-if(!function_exists('primaryName')){
-    function primaryName($name){
+if (!function_exists('primaryName')) {
+    function primaryName($name)
+    {
         $key = explode(' ', $name);
         return $key[0];
     }
@@ -85,3 +87,42 @@ if (!function_exists('days_until_expiry')) {
         return $interval->days;
     }
 }
+
+// Verifica se a função getExtensionFromUrl já foi definida para evitar conflitos
+if (!function_exists('getExtensionFromUrl')) {
+    // Define uma função para obter a extensão de um URL
+    function getExtensionFromUrl($url)
+    {
+        // Usa a função pathinfo para obter informações sobre o URL
+        $pathinfo = pathinfo($url);
+        
+        // Verifica se a chave 'extension' está definida no array retornado por pathinfo
+        if (isset($pathinfo['extension'])) {
+            // Retorna a extensão do arquivo
+            return $pathinfo['extension'];
+        }
+        
+        // Retorna falso se a extensão não estiver definida no URL
+        return false;
+    }
+}
+
+// Verifica se a função getFileTypeFromUrl já foi definida para evitar conflitos
+if (!function_exists('getFileTypeFromUrl')) {
+    // Define uma função para obter o tipo de arquivo a partir de um URL
+    function getFileTypeFromUrl($url)
+    {
+        // Obtém os cabeçalhos HTTP do URL usando a função get_headers
+        $headers = get_headers($url, 1);
+
+        // Verifica se a chave 'Content-Type' está definida nos cabeçalhos
+        if (isset($headers['Content-Type'])) {
+            // Retorna o tipo MIME do arquivo
+            return $headers['Content-Type'];
+        }
+        
+        // Retorna falso se o tipo MIME não estiver definido nos cabeçalhos
+        return false;
+    }
+}
+

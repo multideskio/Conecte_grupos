@@ -39,7 +39,6 @@
                         <img id="header-lang-img" src="/assets/images/flags/<?php if(session('lang') == 'en'){ echo 'us' ; }else{ echo 'br' ;} ?>.svg" alt="Header Language" height="20" class="rounded">
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
-
                         <!-- item-->
                         <a href="<?= site_url('lang/pt-BR') ?>" class="dropdown-item notify-item language py-2" title="<?= lang('Dashboard.idioma.ptbr') ?>">
                             <img src="/assets/images/flags/br.svg" alt="user-image" class="me-2 rounded" height="18">
@@ -51,9 +50,6 @@
                             <img src="/assets/images/flags/us.svg" alt="user-image" class="me-2 rounded" height="18">
                             <span class="align-middle"><?= lang('Dashboard.idioma.en') ?></span>
                         </a>
-
-
-
                     </div>
                 </div>
                 

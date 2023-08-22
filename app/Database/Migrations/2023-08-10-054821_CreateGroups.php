@@ -15,37 +15,62 @@ class CreateGroups extends Migration
                 'unsigned' => true,
                 'auto_increment' => true
             ],
-            'id_company' => [
-                'type' => 'int',
-                'unsigned' => true
-            ],
-            'id_campaign' => [
-                'type' => 'int',
-                'unsigned' => true
-            ],
             'id_group' => [
+                'type' => 'varchar',
+                'constraint' => 60,
+                'null' => false
+            ],
+            'instance' => [
+                'type' => 'int',
+                'unsigned' => true
+            ],
+            'subject' => [
+                'type' => 'varchar',
+                'constraint' => 60,
+                'null' => false
+            ],
+            'subject_owner' => [
                 'type' => 'varchar',
                 'constraint' => 30,
                 'null' => false
             ],
-            'id_user' => [
-                'type' => 'int',
-                'unsigned' => true
-            ],
-            'name' => [
+            'subject_time' => [
                 'type' => 'varchar',
                 'constraint' => 20,
                 'null' => false
             ],
-            'participants' => [
-                'type' => 'int',
-                'constraint' => 4,
+            'size' => [
+                'type' => 'varchar',
+                'constraint' => 20,
+                'null' => false
+            ],
+            'creation' => [
+                'type' => 'varchar',
+                'constraint' => 20,
+                'null' => false
+            ],
+            'owner' => [
+                'type' => 'varchar',
+                'constraint' => 30,
+                'null' => false
+            ],
+            'desc' => [
+                'type' => 'varchar',
+                'constraint' => '255',
                 'null' => true
             ],
-            'description' => [
+            'desc_id' => [
                 'type' => 'varchar',
-                'constraint' => '40',
+                'constraint' => '255',
                 'null' => true
+            ],
+            'restrict' => [
+                'type' => 'bool',
+                'DEFAULT' => true
+            ],
+            'announce' => [
+                'type' => 'bool',
+                'DEFAULT' => true
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -62,8 +87,7 @@ class CreateGroups extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
-        $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('id_campaign', 'campaigns', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('instance', 'instances', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('groups', true);
     }
 

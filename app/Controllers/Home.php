@@ -7,9 +7,10 @@ use App\Services\InstanceService;
 
 class Home extends BaseController
 {
-    public function index(): string
+    public function index()
     {
-        return view('welcome_message');
+        return redirect()->to('login');
+        //return view('welcome_message');
     }
 
     public function teste()
