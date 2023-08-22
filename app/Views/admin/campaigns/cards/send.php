@@ -109,7 +109,7 @@
 
 <script>
     $(document).ready(function() {
-        var allowedExtensions = ['jpg', 'png', 'mp4', 'pdf', 'xlsx', 'zip', 'mp3'];
+        var allowedExtensions = ['jpg', 'png', 'mp4', 'pdf', 'xlsx', 'zip', 'mp3', 'jpeg'];
 
         $('#archive').on('input', function() {
             var url = $(this).val();
