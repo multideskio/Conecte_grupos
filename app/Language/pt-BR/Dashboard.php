@@ -7,7 +7,7 @@ return [
     'menuUser' => [
         'welcome' => 'Bem vindo',
         'profile' => 'Perfil',
-        'tasks' => 'Tarefas',
+        'tasks' => 'Envios',
         'help' => 'Ajuda',
         'maturity' => [
             'Renovar: ',

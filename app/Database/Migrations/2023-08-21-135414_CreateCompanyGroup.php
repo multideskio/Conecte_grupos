@@ -8,6 +8,8 @@ class CreateCompanyGroup extends Migration
 {
     public function up()
     {
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
         //
         $this->forge->addField([
             'id' => [
@@ -40,6 +42,9 @@ class CreateCompanyGroup extends Migration
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('company_groups', true);
+
+        $db->enableForeignKeyChecks();
+
     }
 
     public function down()

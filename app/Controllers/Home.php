@@ -3,20 +3,92 @@
 namespace App\Controllers;
 
 use App\Libraries\Groups_Libraries;
-use App\Services\InstanceService;
+use App\Libraries\S3;
+use App\Models\ParticipantModel;
 
 class Home extends BaseController
 {
+    public function __construct()
+    {
+        helper('response');
+    }
     public function index()
     {
         return redirect()->to('login');
         //return view('welcome_message');
     }
+    public function teste0()
+
+    {
+        $cache = \Config\Services::cache();
+        if ($cache->get("teste")) {
+            return $this->response->setJSON($cache->get('teste'));
+        } else {
+            $participant = new ParticipantModel();
+            $result = $participant->findAll();
+            $cache->save("teste", json_encode($result), 120);
+            print_r($result);
+        }
+    }
 
     public function teste()
     {
-        $instanceService = new InstanceService();
-        $instanceService->verifyPlan();
+
+        if ($this->request->getMethod() === 'post' && $this->request->getFile('userfile')) {
+            $uploadedFile = $this->request->getFile('userfile');
+
+            // Obter a extensão original do nome do arquivo
+            $originalExtension = pathinfo($uploadedFile->getName(), PATHINFO_EXTENSION);
+
+            // Gerar um novo nome aleatório mantendo a extensão original
+            $newRandomName = $uploadedFile->getRandomName() . '.' . $originalExtension;
+
+            // Configurar o caminho no S3 com o novo nome aleatório
+            $s3Path = 'groups/archives/1/' . $newRandomName;
+
+            // Obter o ContentType do arquivo
+            $contentType = $uploadedFile->guessExtension() === 'png' ? 'image/png' : $uploadedFile->getMimeType();
+
+            $s3 = new S3();
+            $result = $s3->uploadFile($uploadedFile->getTempName(), $s3Path, $contentType);
+
+            if ($result) {
+                echo 'Arquivo enviado com sucesso: ' . $result;
+                echo '<br>';
+                echo 'Arquivo com CDN: ' . cdngroup($s3Path);
+                echo "<br>";
+                $totalSizeInBytes = $s3->getDirectorySize('groups/archives/1/');
+
+                if ($totalSizeInBytes >= 0) {
+                    $totalSizeInMB = $totalSizeInBytes / (1024 * 1024);
+                    echo 'Tamanho total do diretório: ' . round($totalSizeInMB, 2) . ' MB';
+                } else {
+                    echo 'Erro ao obter o tamanho do diretório.';
+                }
+                echo "<br>";
+                $contents = $s3->listDirectoryContents('groups/archives/1/');
+
+                if (!empty($contents)) {
+                    echo 'Conteúdo do diretório:<br>';
+                    foreach ($contents as $item) {
+                        echo $item . '<br>';
+                    }
+                } else {
+                    echo 'O diretório está vazio ou ocorreu um erro ao listar o conteúdo.';
+                }
+            } else {
+                echo 'Erro ao enviar o arquivo';
+            }
+            echo '<form action="?" method="post" enctype="multipart/form-data" style="margin-top: 60px;">
+            <input type="file" name="userfile" />
+            <input type="submit" value="Enviar" />
+        </form>';
+        } else {
+            echo '<form action="?" method="post" enctype="multipart/form-data">
+            <input type="file" name="userfile" />
+            <input type="submit" value="Enviar" />
+        </form>';
+        }
     }
 
     public function lang()

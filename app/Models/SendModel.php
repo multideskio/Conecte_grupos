@@ -14,7 +14,7 @@ class SendModel extends Model
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_company', 'id_campaign', 'id_group', 'message'
+        'id_company', 'id_campaign', 'id_group', 'code', 'id_user', 'message'
     ];
 
     // Dates

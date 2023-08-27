@@ -8,6 +8,8 @@ class CreateScheduledCampaigns extends Migration
 {
     public function up()
     {
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
         //RELACIONA CAMPANHA COM AGENDAMENTO
         $this->forge->addField([
             'id' => [
@@ -46,6 +48,9 @@ class CreateScheduledCampaigns extends Migration
         $this->forge->addForeignKey('id_campaign', 'campaigns', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('id_scheduled', 'scheduleds', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('scheduled_campaigns', true);
+
+        $db->enableForeignKeyChecks();
+
     }
 
     public function down()

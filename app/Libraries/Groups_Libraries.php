@@ -2,6 +2,8 @@
 
 namespace App\Libraries;
 
+use App\Models\SendModel;
+
 class Groups_Libraries
 {
     private $apiUrl;
@@ -102,6 +104,7 @@ class Groups_Libraries
 
         $client = \Config\Services::curlrequest();
 
+        $code = uniqid();
 
         foreach ($listaDestino as $destino) {
             if (!empty($archive)) {
@@ -138,6 +141,7 @@ class Groups_Libraries
                         // Adicione mais casos aqui para outros tipos de arquivo
                     default:
                         // Tipo de arquivo não suportado, pode adicionar uma lógica de erro aqui
+                        throw new \Exception('O seu arquivo não é suportado.');
                         break;
                 }
             } else {
@@ -154,6 +158,28 @@ class Groups_Libraries
                 $responseBody = $response->getBody();
                 $json[] = json_decode($responseBody, true);
             }
+
+
+            /**
+             * 
+             * Não usar sessions na api, pode dar erro de execução no cron
+             * Mudar consulta para busca dados no banco de dados ao invés de usar sessions
+             * 
+             */
+            $inserSend[] = [
+                'id_company'  => session('user')['company'],
+                'id_group'    => $destino,
+                'id_user'     => session('user')['id'],
+                'message'     => $message,
+                'code'        => $code
+            ];
+            
+        }
+
+        $sendsModel = new SendModel();
+
+        if (!empty($inserSend)) {
+            $sendsModel->insertBatch($inserSend);
         }
 
         // Adicione aqui a lógica para o caso em que $archive é verdadeiro

@@ -8,6 +8,8 @@ class CreateCompany extends Migration
 {
     public function up()
     {
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
         //CLIENTE DO ADMINISTRADOR
         $this->forge->addField([
             'id' => [
@@ -68,6 +70,8 @@ class CreateCompany extends Migration
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_admin', 'superadmin', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('companies', true);
+        $db->enableForeignKeyChecks();
+
     }
 
     public function down()

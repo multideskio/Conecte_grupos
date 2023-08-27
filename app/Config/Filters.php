@@ -14,6 +14,9 @@ class Filters extends BaseConfig
     /**
      * Configures aliases for Filter classes to
      * make reading things nicer and simpler.
+     *
+     * @var array<string, string>
+     * @phpstan-var array<string, class-string>
      */
     public array $aliases = [
         'csrf'           => CSRF::class,
@@ -23,8 +26,8 @@ class Filters extends BaseConfig
         'secureheaders'  => SecureHeaders::class,
         'logged'         => \App\Filters\LoggedIn::class,
         'loggedchatwoot' => \App\Filters\LoggedInChatwoot::class,
-        'cors'           => \App\Filters\Cors::class
-        
+        'cors'           => \App\Filters\Cors::class,
+        //'noFilter'       => \App\Filters\NoSessionFilter::class
     ];
 
     /**
@@ -39,7 +42,7 @@ class Filters extends BaseConfig
             // 'invalidchars',
         ],
         'after' => [
-            'toolbar',
+            'toolbar' => ['except' => 'api/*'],
             // 'honeypot',
             // 'secureheaders',
         ],

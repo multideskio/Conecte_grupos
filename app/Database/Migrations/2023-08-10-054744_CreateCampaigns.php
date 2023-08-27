@@ -8,6 +8,8 @@ class CreateCampaigns extends Migration
 {
     public function up()
     {
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
         //CRIAÇÃO DE CAMPANHA
         $this->forge->addField([
             'id' => [
@@ -48,6 +50,9 @@ class CreateCampaigns extends Migration
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('campaigns', true);
+
+        $db->enableForeignKeyChecks();
+
     }
 
     public function down()

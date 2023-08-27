@@ -8,6 +8,10 @@ class CreateAdmin extends Migration
 {
     public function up()
     {
+
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
+
         //ADMINISTRADO DO SISTEMA
         $this->forge->addField([
             'id' => [
@@ -44,6 +48,8 @@ class CreateAdmin extends Migration
 
         $this->forge->addPrimaryKey('id');
         $this->forge->createTable('superadmin', true);
+        $db->enableForeignKeyChecks();
+
     }
 
     public function down()

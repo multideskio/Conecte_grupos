@@ -15,10 +15,10 @@ File: Main Js File
 	 */
 	var navbarMenuHTML = document.querySelector(".navbar-menu").innerHTML;
 	var horizontalMenuSplit = 7; // after this number all horizontal menus will be moved in More menu options
-	var default_lang = "en"; // set Default Language
-	var language = localStorage.getItem("language");
+	//var default_lang = "en"; // set Default Language
+	//var language = localStorage.getItem("language");
 
-	function initLanguage() {
+	/*function initLanguage() {
 		// Set new language
 		(language === null) ? setLanguage(default_lang) : setLanguage(language);
 		var languages = document.getElementsByClassName("language");
@@ -27,9 +27,9 @@ File: Main Js File
 				setLanguage(dropdown.getAttribute("data-lang"));
 			});
 		});
-	}
+	}*/
 
-	function setLanguage(lang) {
+	/*function setLanguage(lang) {
 		if (document.getElementById("header-lang-img")) {
 			if (lang == "en") {
 				document.getElementById("header-lang-img").src = "/assets/images/flags/us.svg";
@@ -52,9 +52,9 @@ File: Main Js File
 			language = localStorage.getItem("language");
 			getLanguage();
 		}
-	}
+	}*/
 
-	// Multi language setting
+	/*// Multi language setting
 	function getLanguage() {
 		language == null ? setLanguage(default_lang) : false;
 		var request = new XMLHttpRequest();
@@ -75,7 +75,7 @@ File: Main Js File
 		};
 		// Sending the request to the server
 		request.send();
-	}
+	}*/
 
 	function pluginData() {
 		/**
@@ -394,9 +394,9 @@ File: Main Js File
 			currentPath = (currentPath == "/") ? "/" : currentPath.substring(currentPath.lastIndexOf("/") + 1);
 			if (currentPath) {
 				// navbar-nav
-				var a = document.getElementById("navbar-nav").querySelector('[href="' + currentPath + '"]');
+				var a = document.getElementById("navbar-nav").querySelector('[href="' + location.pathname + '"]');
 
-				if (a) {
+				if (a && a.getAttribute("href") === location.pathname) {
 					var parentCollapseDiv = a.closest(".collapse.menu-dropdown");
 					if (parentCollapseDiv) {
 						parentCollapseDiv.classList.add("show");
@@ -881,11 +881,11 @@ File: Main Js File
 		currentPath = (currentPath == "/") ? "/" : currentPath.substring(currentPath.lastIndexOf("/") + 1);
 		if (currentPath) {
 			if (document.body.className == "twocolumn-panel") {
-				document.getElementById("two-column-menu").querySelector('[href="' + currentPath + '"]').classList.add("active");
+				document.getElementById("two-column-menu").querySelector('[href="' + location.pathname + '"]').classList.add("active");
 			}
 			// navbar-nav
 			var a = document.getElementById("navbar-nav").querySelector('[href="' + currentPath + '"]');
-			if (a) {
+			if (a && a.getAttribute("href") === location.pathname) {
 				a.classList.add("active");
 				var parentCollapseDiv = a.closest(".collapse.menu-dropdown");
 				if (parentCollapseDiv && parentCollapseDiv.parentElement.closest(".collapse.menu-dropdown")) {
@@ -1726,7 +1726,7 @@ File: Main Js File
 			x.addEventListener("change", function () {
 				document.documentElement.setAttribute(ele, x.value);
 				sessionStorage.setItem(ele, x.value);
-				initLanguage();
+				//initLanguage();
 
 				if (ele == "data-layout-width" && x.value == "boxed") {
 					document.documentElement.setAttribute("data-sidebar-size", "sm-hover");
@@ -1943,7 +1943,7 @@ File: Main Js File
 		initComponents();
 		resetLayout();
 		pluginData();
-		initLanguage();
+		//initLanguage();
 		isCollapseMenu();
 		initMenuItemScroll();
 	}

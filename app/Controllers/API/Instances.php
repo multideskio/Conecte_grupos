@@ -117,52 +117,44 @@ class Instances extends ResourceController
         }
     }
 
-    public function disconnect(){
+    public function disconnect()
+    {
 
         $input = $this->request->getVar();
         $sInstance = new InstanceService;
-        try{
+        try {
 
             $sDisconnect = $sInstance->disconnect($input);
             //$sInstance->verifyPlan();
             return $this->respond($sDisconnect);
-        
-        }catch(\Exception $e){
-        
+        } catch (\Exception $e) {
+
             return $this->fail($e->getMessage());
-        
         }
     }
 
-    public function restart(){
+    public function restart()
+    {
         $input = $this->request->getVar();
 
         $sInstance = new InstanceService;
 
-        try{
+        try {
             $sDisconnect = $sInstance->restart($input);
             sleep(3);
             $sInstance->verifyPlan();
             return $this->respond($sDisconnect);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $this->fail($e->getMessage());
         }
     }
 
-    public function conectar(){
-
-        $input = $this->request->getVar();
-        $sInstance = new InstanceService;
+    public function conectar()
+    {
+        $input      = $this->request->getVar();
+        $sInstance  = new InstanceService;
+        $sConnect   = $sInstance->conectar($input);
         
-        try{
-
-            $sDisconnect = $sInstance->conectar($input);
-            return $this->respond($sDisconnect);
-
-        }catch(\Exception $e){
-        
-            return $this->fail($e->getMessage());
-        
-        }
+        return $this->respond($sConnect);
     }
 }

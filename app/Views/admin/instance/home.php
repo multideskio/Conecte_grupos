@@ -143,6 +143,7 @@
                 },
                 error: function(xhr, status, error) {
                     console.error(`Erro durante ${actionType}:`, error);
+                    $('#syncMessageText').text(`Erro durante ${actionType}: ${error}`);
                     // Mostrar mensagem de erro para o usuário
                 }
             });
@@ -186,8 +187,12 @@
                 seconds--;
                 setTimeout(updateCountdown, 1000); // Chama a função novamente após 1 segundo
             } else {
+                sincronize();
                 // Atualiza a página após 30 segundos
-                window.location.reload();
+                setTimeout(function() {
+                    window.location.reload(); // Esconde a mensagem após um curto período de tempo
+                }, 3000); // Tempo em milissegundos (aqui definido para 3 segundos)
+                
             }
         }
 

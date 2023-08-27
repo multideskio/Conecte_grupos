@@ -126,3 +126,33 @@ if (!function_exists('getFileTypeFromUrl')) {
     }
 }
 
+if (!function_exists('cdn')) {
+    function cdngroup($caminho = false)
+    {
+        if (!$caminho) {
+            $url = "https://cdn.multidesk.io/";
+        } else {
+            $url = "https://cdn.multidesk.io/" . $caminho;
+        }
+        return $url;
+    }
+}
+
+
+if (!function_exists('cleanFilename')) {
+    function cleanFilename($filename)
+    {
+        // Remove acentuação
+        $cleaned = iconv('UTF-8', 'ASCII//TRANSLIT', $filename);
+
+        // Remove caracteres especiais, exceto letras, números e espaços
+        $cleaned = preg_replace('/[^A-Za-z0-9\s\-\.]/', '', $cleaned);
+
+        // Substitui espaços por hífens
+        $cleaned = preg_replace('/\s+/', '-', $cleaned);
+        $cleaned = preg_replace('/-+/', '-', $cleaned);
+        $cleaned = trim($cleaned, '-');
+
+        return $cleaned;
+    }
+}

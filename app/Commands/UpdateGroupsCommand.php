@@ -14,7 +14,7 @@ class UpdateGroupsCommand extends BaseCommand
 
     public function __construct()
     {
-        $this->groupService = new GroupService('64e1b07d5b16d_instance_1', 1); // Replace with your instance name
+        //$this->groupService = new GroupService('64e1b07d5b16d_instance_1', 1); // Replace with your instance name
     }
 
     protected $group = 'custom';
@@ -24,7 +24,7 @@ class UpdateGroupsCommand extends BaseCommand
     public function run(array $params)
     {
         CLI::write('Updating groups and participants...');
-        $this->groupService->listGroups(true);
+        //$this->groupService->listGroups(true);
         CLI::write('Update completed.');
     }
     

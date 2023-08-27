@@ -8,6 +8,8 @@ class CreateInstance extends Migration
 {
     public function up()
     {
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
         //TABELA DE INSTANCIAS DO SUPER ADMIN COMPARTILHADA COM OS DEMAIS CLIENTES
         $this->forge->addField([
             'id' => [
@@ -79,6 +81,9 @@ class CreateInstance extends Migration
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('instances', true);
+
+        $db->enableForeignKeyChecks();
+
     }
 
     public function down()

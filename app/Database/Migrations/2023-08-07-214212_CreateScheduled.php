@@ -8,6 +8,8 @@ class CreateScheduled extends Migration
 {
     public function up()
     {
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
         //AGENDAMENTOS
         $this->forge->addField([
             'id' => [
@@ -23,23 +25,21 @@ class CreateScheduled extends Migration
                 'type' => 'int',
                 'unsigned' => true
             ],
+            'id_instance' => [
+                'type' => 'int',
+                'unsigned' => true
+            ],
             'name' => [
                 'type' => 'varchar',
                 'constraint' => 40
             ],
             'message' => [
-                'type' => 'varchar',
-                'null' => false,
-                'constraint' => 120
+                'type' => 'text',
+                'null' => false
             ],
             'archive' => [
                 'type' => 'varchar',
                 'constraint' => '140',
-                'null' => true
-            ],
-            'type_archive' => [
-                'type' => 'varchar',
-                'constraint' => '10',
                 'null' => true
             ],
             'senders' => [
@@ -74,6 +74,8 @@ class CreateScheduled extends Migration
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('scheduleds', true);
+        $db->enableForeignKeyChecks();
+
     }
 
     public function down()

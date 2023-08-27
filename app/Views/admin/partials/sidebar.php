@@ -48,6 +48,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="<?= site_url('dashboard/gallery') ?>" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                    <i class="ri-questionnaire-line"></i> <span ><?= lang('Menu.gallery') ?></span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="<?= site_url('dashboard/tasks') ?>" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-task-line"></i> <span ><?= lang('Menu.tasks') ?></span>
                     </a>

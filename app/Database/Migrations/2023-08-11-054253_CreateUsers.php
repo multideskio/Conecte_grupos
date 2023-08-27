@@ -8,6 +8,8 @@ class CreateUsers extends Migration
 {
     public function up()
     {
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
         //Tabel para todos os usuários relacionando e definindo a uma empresa
         $this->forge->addField([
             'id' => [
@@ -75,6 +77,9 @@ class CreateUsers extends Migration
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('users', true);
+
+        $db->enableForeignKeyChecks();
+
     }
 
     public function down()

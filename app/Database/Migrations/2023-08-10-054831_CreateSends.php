@@ -8,6 +8,8 @@ class CreateSends extends Migration
 {
     public function up()
     {
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
         //REGISTRO DE ENVIOS DAS CAMPANHAS
         $this->forge->addField([
             'id' => [
@@ -32,6 +34,11 @@ class CreateSends extends Migration
                 'type' => 'int',
                 'unsigned' => true
             ],
+            'code' => [
+                'type' => 'varchar',
+                'constraint' => '80',
+                'null' => false
+            ],
             'message' => [
                 'type' => 'text',
                 'null' => true
@@ -52,8 +59,10 @@ class CreateSends extends Migration
 
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('id_company', 'companies', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('id_campaign', 'campaigns', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('sends', true);
+
+        $db->enableForeignKeyChecks();
+
     }
 
     public function down()

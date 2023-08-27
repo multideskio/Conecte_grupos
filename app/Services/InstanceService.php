@@ -13,13 +13,15 @@ class InstanceService
     protected $superModel;
     protected $sessionData;
     protected $instanceModel;
+    protected $httpClient;
 
     public function __construct()
     {
+        $this->httpClient     = \Config\Services::curlrequest();
         $this->instanceModel  = new InstanceModel();
         $this->superModel     = new SuperModel();
         $this->sessionData    = session('user');
-        $this->apiCredentials = $this->superModel->select('url_api_wa url, api_key_wa key')->find($this->sessionData['control']);
+        $this->apiCredentials = $this->superModel->select('url_api_wa url, api_key_wa key')->find(1);
         helper('response');
     }
 
@@ -60,15 +62,15 @@ class InstanceService
             'apikey'       => $this->apiCredentials['key'],
             'Content-Type' => 'application/json',
         ];
-        $httpClient = \Config\Services::curlrequest();
+
         $responseBodies = [];
         for ($i = 0; $i < $numInstances; $i++) {
-            $instanceName = uniqid() . "_instance_{$this->sessionData['company']}";
+            $instanceName = uniqid() . $this->sessionData['company'];
             $postPayload = [
                 "instanceName" => $instanceName,
-                "qrcode" => true,
+                "qrcode" => false,
                 "webhook" => site_url("api/v1/webhook/{$instanceName}"),
-                "webhook_by_events" => true,
+                "webhook_by_events" => false,
                 "events" => [
                     // "APPLICATION_STARTUP",
                     //"QRCODE_UPDATED",
@@ -94,7 +96,7 @@ class InstanceService
                 ]
             ];
 
-            $response = $httpClient->request('POST', $apiUrl, [
+            $response = $this->httpClient->request('POST', $apiUrl, [
                 'headers' => $headers,
                 'json' => $postPayload
             ]);
@@ -135,13 +137,13 @@ class InstanceService
     private function searchApi()
     {
         $apiUrl = "{$this->apiCredentials['url']}/instance/fetchInstances";
-        $httpClient = \Config\Services::curlrequest();
+
         $headers = [
             'Accept'       => '*/*',
             'apikey'       => $this->apiCredentials['key'],
             'Content-Type' => 'application/json',
         ];
-        $response = $httpClient->request('GET', $apiUrl, [
+        $response = $this->httpClient->request('GET', $apiUrl, [
             'headers' => $headers,
         ]);
         return json_decode($response->getBody(), true);
@@ -172,8 +174,9 @@ class InstanceService
                 ];
             }
         }
-
-        $this->instanceModel->updateBatch($dataToUpdate, 'name');
+        if (!empty($dataToUpdate)) {
+            $this->instanceModel->updateBatch($dataToUpdate, 'name');
+        }
     }
 
     /**
@@ -191,9 +194,6 @@ class InstanceService
         // Monta a URL da API para desconectar a instância
         $apiUrl = "{$this->apiCredentials['url']}/instance/logout/{$input['instance']}";
 
-        // Cria uma instância do cliente HTTP
-        $httpClient = \Config\Services::curlrequest();
-
         // Define os cabeçalhos da requisição
         $headers = [
             'Accept'       => '*/*',
@@ -203,7 +203,7 @@ class InstanceService
 
         try {
             // Faz a requisição HTTP DELETE
-            $response = $httpClient->request('DELETE', $apiUrl, [
+            $response = $this->httpClient->request('DELETE', $apiUrl, [
                 'headers' => $headers,
             ]);
 
@@ -223,9 +223,6 @@ class InstanceService
         // Monta a URL da API para desconectar a instância
         $apiUrl = "{$this->apiCredentials['url']}/instance/restart/{$input['instance']}";
 
-        // Cria uma instância do cliente HTTP
-        $httpClient = \Config\Services::curlrequest();
-
         // Define os cabeçalhos da requisição
         $headers = [
             'Accept'       => '*/*',
@@ -234,7 +231,7 @@ class InstanceService
         ];
 
         // Faz a requisição HTTP DELETE
-        $response = $httpClient->request('PUT', $apiUrl, [
+        $response = $this->httpClient->request('PUT', $apiUrl, [
             'headers' => $headers,
         ]);
 
@@ -242,14 +239,72 @@ class InstanceService
         return json_decode($response->getBody(), true);
     }
 
-    public function conectar(array $input): array
+
+    public function conectar(array $input)
     {
         // Monta a URL da API para desconectar a instância
         $apiUrl = "{$this->apiCredentials['url']}/instance/connect/{$input['instance']}";
+        // Define os cabeçalhos da requisição
+        $headers = [
+            'Accept'       => '*/*',
+            'apikey'       => $input['apikey'],
+            'Content-Type' => 'application/json',
+        ];
+        try {
+            // Faz a requisição HTTP GET
+            $response = $this->httpClient->request('GET', $apiUrl, [
+                'headers' => $headers,
+            ]);
+            // Decodifica a resposta JSON e retorna
+            return json_decode($response->getBody(), true);
+        } catch (\Exception $e) {
+            return $this->recoverInstance($input['instance'], $input['apikey']);
+            //print_r($e);
+        }
+    }
 
-        // Cria uma instância do cliente HTTP
-        $httpClient = \Config\Services::curlrequest();
+    public function recoverInstance($nameInstance, $apikeyinstance)
+    {
+        $apiUrl = "{$this->apiCredentials['url']}/instance/create";
 
+        $headers = [
+            'Accept'       => '*/*',
+            'apikey'       => $this->apiCredentials['key'],
+            'Content-Type' => 'application/json',
+        ];
+
+        $postPayload = [
+            "instanceName" => $nameInstance,
+            "token" => $apikeyinstance,
+            "qrcode" => false,
+            "webhook" => site_url("api/v1/webhook/{$nameInstance}"),
+            "webhook_by_events" => false,
+            "events" => [
+                "GROUPS_UPSERT",
+                "GROUP_UPDATE",
+                "GROUP_PARTICIPANTS_UPDATE",
+                "CONNECTION_UPDATE"
+            ]
+        ];
+
+        $this->httpClient->request('POST', $apiUrl, [
+            'headers' => $headers,
+            'json' => $postPayload
+        ]);
+
+        $input = [
+            'instance' => $nameInstance,
+            'apikey' => $apikeyinstance,
+            'recover' => 1
+        ];
+
+        return  $this->reconect($input);
+    }
+
+    public function reconect(array $input)
+    {
+        // Monta a URL da API para desconectar a instância
+        $apiUrl = "{$this->apiCredentials['url']}/instance/connect/{$input['instance']}";
         // Define os cabeçalhos da requisição
         $headers = [
             'Accept'       => '*/*',
@@ -257,11 +312,10 @@ class InstanceService
             'Content-Type' => 'application/json',
         ];
 
-        // Faz a requisição HTTP DELETE
-        $response = $httpClient->request('GET', $apiUrl, [
+        // Faz a requisição HTTP GET
+        $response = $this->httpClient->request('GET', $apiUrl, [
             'headers' => $headers,
         ]);
-
         // Decodifica a resposta JSON e retorna
         return json_decode($response->getBody(), true);
     }

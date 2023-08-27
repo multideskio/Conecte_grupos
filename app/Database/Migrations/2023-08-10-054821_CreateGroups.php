@@ -8,6 +8,8 @@ class CreateGroups extends Migration
 {
     public function up()
     {
+        $db = \Config\Database::connect();
+        $db->disableForeignKeyChecks();
         //CRIAÇÃO DE GRUPOS
         $this->forge->addField([
             'id' => [
@@ -72,6 +74,15 @@ class CreateGroups extends Migration
                 'type' => 'bool',
                 'DEFAULT' => true
             ],
+            'image' => [
+                'type' => 'varchar',
+                'constraint' => '255',
+                'null' => true
+            ],
+            'system_create' => [
+                'type' => 'bool',
+                'DEFAULT' => false
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
@@ -89,6 +100,9 @@ class CreateGroups extends Migration
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('instance', 'instances', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('groups', true);
+
+        $db->enableForeignKeyChecks();
+
     }
 
     public function down()

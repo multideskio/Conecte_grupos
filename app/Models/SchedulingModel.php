@@ -14,7 +14,16 @@ class SchedulingModel extends Model
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
     protected $allowedFields    = [
-        'id_company', 'name', 'message', 'archive', 'type_archive', 'senders', 'everyone', 'start', 'status'
+        'id_company',
+        'id_user',
+        'id_instance',
+        'name',
+        'message',
+        'archive',
+        'senders',
+        'everyone',
+        'start',
+        'status'
     ];
 
     // Dates

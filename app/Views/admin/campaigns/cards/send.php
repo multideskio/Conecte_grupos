@@ -45,10 +45,6 @@
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label for="title">Titulo da mensagem</label>
-                            <input type="text" class="form-control" name="title" id="title" placeholder="Titulo para a mensagem">
-                        </div>
-                        <div class="mb-3">
                             <label for="message">Escreva a mensagem</label>
                             <textarea class="form-control" name="message" id="message" cols="30" rows="5"></textarea>
                         </div>
@@ -82,54 +78,35 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
 <?= $this->section('js') ?>
-
 <!-- multi.js -->
 <script src="/assets/libs/multi.js/multi.min.js"></script>
-<!-- autocomplete js -->
-<script src="/assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
-
-<!-- init js -->
-<script src="/assets/js/pages/form-advanced.init.js"></script>
-<!-- input spin init -->
-<script src="/assets/js/pages/form-input-spin.init.js"></script>
-<!-- input flag init -->
-<script src="/assets/js/pages/flag-input.init.js"></script>
-
-
-
-
+<script>
+    var multiSelectOptGroup = document.getElementById("multiselect-optiongroup");
+    if (multiSelectOptGroup) {
+        multi(multiSelectOptGroup, {
+            enable_search: true
+        });
+    }
+</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
 <script>
     $(document).ready(function() {
         var allowedExtensions = ['jpg', 'png', 'mp4', 'pdf', 'xlsx', 'zip', 'mp3', 'jpeg'];
-
         $('#archive').on('input', function() {
             var url = $(this).val();
             var extension = url.split('.').pop().toLowerCase();
-
             if ($.inArray(extension, allowedExtensions) === -1) {
-
                 $('#errorMessage').show();
                 $('#errorMessageText').text('Extensão inválida para envio. As extensões permitidas são: <br><b>' + allowedExtensions.join(', ')) + '</b>';
                 //$(this).val('');
                 $('#sendButton').prop('disabled', true); // Desabilita o botão
-
             } else {
                 $('#errorMessage').hide();
                 $('errorMessageText').text('');
                 $('#sendButton').prop('disabled', false); // Desabilita o botão
-
             }
         });
     });
 </script>
-
 <?= $this->endSection() ?>

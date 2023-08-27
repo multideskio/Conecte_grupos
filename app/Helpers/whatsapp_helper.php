@@ -1,7 +1,7 @@
 <?php // app/Helpers/WhatsAppHelper.php
 
 if (!function_exists('createTextMessage')) {
-    function createTextMessage($number, $message, $mentions = true) {
+    function createTextMessage($number, $message, bool $mentions = false) {
         return array(
             "number" => $number,
             "options" => array(

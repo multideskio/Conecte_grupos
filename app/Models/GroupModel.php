@@ -40,4 +40,19 @@ class GroupModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+    
+
+    public function getFormattedSenderGroups($senderIds)
+    {
+        $listGroups = "";
+
+        foreach ($senderIds as $searchGroupList) {
+            $group = $this->where('id_group', $searchGroupList)->first();
+            if ($group) {
+                $listGroups .= $group['subject'] . ", ";
+            }
+        }
+
+        return rtrim($listGroups, ", ");
+    }
 }

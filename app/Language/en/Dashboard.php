@@ -1,13 +1,13 @@
 <?php
 return [
-    'language' => [
+    'idioma' => [
         'en' => 'EN US',
         'ptbr' => 'PT BR'
     ],
     'menuUser' => [
         'welcome' => 'Welcome',
         'profile' => 'Profile',
-        'tasks' => 'Tasks',
+        'tasks' => 'Sends',
         'help' => 'Help',
         'maturity' => [
             'Renewal: ',
