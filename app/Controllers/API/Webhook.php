@@ -89,21 +89,21 @@ class Webhook extends ResourceController
         /**
          * ADICIONAR A LOGICA DE IDENTIFICAR A CAMPANHA PELO ID DO GRUPO
          */
-
-        
         $instanceModel  = new InstanceModel();
         $postPayload    = $this->request->getVar();
         $logsGroupModel = new LogsGroupsModel();
 
-        log_message('error', json_encode($postPayload));
-
-        exit;
         $participantModel = new ParticipantModel();
 
         $build = $instanceModel->where([
             'name'    => $instance,
             'api_key' => $postPayload->apikey
         ])->first();
+
+        if(!$build){
+            log_message('error', "Company not found: instance {$instance}");
+            return $this->fail('Company not found');
+        }
 
         $participant = $participantModel->where([
             'id_company' => $build['id_company'],
@@ -121,9 +121,9 @@ class Webhook extends ResourceController
                 'payload'       => json_encode($postPayload, true)
             ];
             $logsGroupModel->insert($data);
-            return $this->respondCreated(['msg' => 'Created success!']);
+            return $this->respondCreated();
         } else {
-            return $this->respondNoContent();
+            return $this->fail('User is not a group admin');
         }
     }
 }

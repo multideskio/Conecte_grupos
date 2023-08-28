@@ -4,7 +4,7 @@ return [
     'dashboard'     => 'Dashboard',
     'campaigns'     => 'Campaigns',
     'instances'     => 'Instances',
-    'gallery'       => 'Image gallery',
+    'gallery'       => 'Files',
     'tasks'         => 'Sends',
     'leads'         => 'Leads',
     'sicronization' => 'Synchronization',

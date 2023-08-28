@@ -37,17 +37,18 @@ class Home extends BaseController
         if ($this->request->getMethod() === 'post' && $this->request->getFile('userfile')) {
             $uploadedFile = $this->request->getFile('userfile');
 
-            // Obter a extensão original do nome do arquivo
-            $originalExtension = pathinfo($uploadedFile->getName(), PATHINFO_EXTENSION);
+
+
+            
 
             // Gerar um novo nome aleatório mantendo a extensão original
-            $newRandomName = $uploadedFile->getRandomName() . '.' . $originalExtension;
+            $newRandomName = $uploadedFile->getRandomName();// . '.' . $uploadedFile->getClientExtension();
 
             // Configurar o caminho no S3 com o novo nome aleatório
             $s3Path = 'groups/archives/1/' . $newRandomName;
 
             // Obter o ContentType do arquivo
-            $contentType = $uploadedFile->guessExtension() === 'png' ? 'image/png' : $uploadedFile->getMimeType();
+            $contentType = $uploadedFile->getMimeType();
 
             $s3 = new S3();
             $result = $s3->uploadFile($uploadedFile->getTempName(), $s3Path, $contentType);
