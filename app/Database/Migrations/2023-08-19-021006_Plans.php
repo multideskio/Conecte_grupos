@@ -46,6 +46,10 @@ class Plans extends Migration
                 'type' => 'bool',
                 'DEFAULT' => true
             ],
+            'size_files' => [
+                'type' => 'int',
+                'DEFAULT' => 200
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

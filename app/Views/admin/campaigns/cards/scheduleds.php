@@ -4,9 +4,6 @@
 <!-- autocomplete css -->
 <link rel="stylesheet" href="/assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css">
 <!-- datepiker -->
-<link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/classic.min.css" /> <!-- 'classic' theme -->
-<link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/monolith.min.css" /> <!-- 'monolith' theme -->
-<link rel="stylesheet" href="/assets/libs/@simonwep/pickr/themes/nano.min.css" /> <!-- 'nano' theme -->
 <?= $this->endSection() ?>
 
 <div class="row">
@@ -83,7 +80,7 @@
                         <input type="hidden" name="apikey" value="<?= $rowInstance['api_key'] ?>">
                         <input type="hidden" name="idInstance" value="<?= $rowInstance['id'] ?>">
                         <div class="text-end">
-                            <button type="submit" class="btn btn-info" id="sendButton">ENVIAR</button>
+                            <button type="submit" class="btn btn-info" id="sendButton">Agendar</button>
                         </div>
                     </div>
                 </div>
@@ -106,8 +103,7 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-<!-- Modern colorpicker bundle -->
-<script src="/assets/libs/@simonwep/pickr/pickr.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.9/dist/l10n/pt.js"></script>
 <script src="https://malsup.github.io/jquery.form.js"></script>
 <script>

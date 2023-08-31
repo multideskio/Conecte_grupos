@@ -4,7 +4,7 @@ return [
     'dashboard'     => 'Dashboard',
     'campaigns'     => 'Campanhas',
     'instances'     => 'Instâncias',
-    'gallery'       => 'Arquivos',
+    'files'         => 'Arquivos',
     'tasks'         => 'Envios',
     'leads'         => 'Leads',
     'sicronization' => 'Sincronização',

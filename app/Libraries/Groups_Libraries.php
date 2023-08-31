@@ -123,15 +123,15 @@ class Groups_Libraries
                         break;
                     case 'xlsx':
                         $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
-                        $posts  = createXlsxDocumentMessage($destino, 'evolution-api.xlsx', $message, $archive);
+                        $posts  = createXlsxDocumentMessage($destino, 'arquivo.xlsx', $message, $archive);
                         break;
                     case 'zip':
                         $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
-                        $posts  = createZipDocumentMessage($destino, 'preencher.zip', $message, $archive);
+                        $posts  = createZipDocumentMessage($destino, 'aqruivo.zip', $message, $archive);
                         break;
                     case 'pdf':
                         $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
-                        $posts  = createPdfDocumentMessage($destino, 'preencher.pdf', $message, $archive);
+                        $posts  = createPdfDocumentMessage($destino, 'arquivo.pdf', $message, $archive);
                         break;
                     case 'mp3':
                     case 'ogg':

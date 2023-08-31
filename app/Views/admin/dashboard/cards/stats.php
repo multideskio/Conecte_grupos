@@ -27,106 +27,108 @@
 </h4>
 <div class="row">
     <div class="col-md-6">
-        <div class="row">
-            <div class="col-xl-6 col-md-6">
-                <!-- card -->
-                <div class="card card-animate">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <p class="text-uppercase fw-medium text-muted mb-0">Redirecionamentos</p>
-                            </div>
+        <div class="d-flex flex-column h-100">
+            <div class="row">
+                <div class="col-xl-6 col-md-6">
+                    <!-- card -->
+                    <div class="card card-animate">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <p class="text-uppercase fw-medium text-muted mb-0">Redirecionamentos</p>
+                                </div>
 
-                        </div>
-                        <div class="d-flex align-items-end justify-content-between mt-4">
-                            <div>
-                                <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                    <span class="counter-value" data-target="0">0</span>
-                                </h4>
                             </div>
-                            <div class="avatar-sm flex-shrink-0">
-                                <span class="avatar-title rounded fs-3">
-                                    <i class="bx bxs-pointer"></i>
-                                </span>
+                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                        <span class="counter-value" data-target="0">0</span>
+                                    </h4>
+                                </div>
+                                <div class="avatar-sm flex-shrink-0">
+                                    <span class="avatar-title rounded fs-3">
+                                        <i class="bx bxs-pointer"></i>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    </div><!-- end card body -->
-                </div><!-- end card -->
-            </div><!-- end col -->
-            <div class="col-xl-6 col-md-6">
-                <!-- card -->
-                <div class="card card-animate">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <p class="text-uppercase fw-medium text-muted mb-0">Grupos criados no sistema</p>
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+                <div class="col-xl-6 col-md-6">
+                    <!-- card -->
+                    <div class="card card-animate">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <p class="text-uppercase fw-medium text-muted mb-0">Grupos criados no sistema</p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex align-items-end justify-content-between mt-4">
-                            <div>
-                                <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                    <span class="counter-value" data-target="0">0</span>
-                                </h4>
+                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                        <span class="counter-value" data-target="0">0</span>
+                                    </h4>
+                                </div>
+                                <div class="avatar-sm flex-shrink-0">
+                                    <span class="avatar-title rounded fs-3">
+                                        <i class="bx bxs-conversation"></i>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="avatar-sm flex-shrink-0">
-                                <span class="avatar-title rounded fs-3">
-                                    <i class="bx bxs-conversation"></i>
-                                </span>
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-md-6">
+                    <!-- card -->
+                    <div class="card card-animate">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <p class="text-uppercase fw-medium text-muted mb-0">Campanhas</p>
+                                </div>
                             </div>
-                        </div>
-                    </div><!-- end card body -->
-                </div><!-- end card -->
-            </div><!-- end col -->
-        </div>
-        <div class="row">
-            <div class="col-xl-6 col-md-6">
-                <!-- card -->
-                <div class="card card-animate">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <p class="text-uppercase fw-medium text-muted mb-0">Campanhas</p>
+                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                        <span class="counter-value" data-target="<?= $numCampanhas ?>">0</span>
+                                    </h4>
+                                </div>
+                                <div class="avatar-sm flex-shrink-0">
+                                    <span class="avatar-title rounded fs-3">
+                                        <i class="bx bxs-paper-plane"></i>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex align-items-end justify-content-between mt-4">
-                            <div>
-                                <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                    <span class="counter-value" data-target="0">0</span>
-                                </h4>
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+                <div class="col-xl-6 col-md-6">
+                    <!-- card -->
+                    <div class="card card-animate">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1">
+                                    <p class="text-uppercase fw-medium text-muted mb-0">Leads</p>
+                                </div>
                             </div>
-                            <div class="avatar-sm flex-shrink-0">
-                                <span class="avatar-title rounded fs-3">
-                                    <i class="bx bxs-paper-plane"></i>
-                                </span>
+                            <div class="d-flex align-items-end justify-content-between mt-4">
+                                <div>
+                                    <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                                        <span class="counter-value" data-target="0">0</span>
+                                    </h4>
+                                </div>
+                                <div class="avatar-sm flex-shrink-0">
+                                    <span class="avatar-title bg-primary-subtle rounded fs-3">
+                                        <i class="bx bxs-bar-chart-alt-2"></i>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    </div><!-- end card body -->
-                </div><!-- end card -->
-            </div><!-- end col -->
-            <div class="col-xl-6 col-md-6">
-                <!-- card -->
-                <div class="card card-animate">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1">
-                                <p class="text-uppercase fw-medium text-muted mb-0">Leads</p>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-end justify-content-between mt-4">
-                            <div>
-                                <h4 class="fs-22 fw-semibold ff-secondary mb-4">
-                                    <span class="counter-value" data-target="0">0</span>
-                                </h4>
-                            </div>
-                            <div class="avatar-sm flex-shrink-0">
-                                <span class="avatar-title bg-primary-subtle rounded fs-3">
-                                    <i class="bx bxs-bar-chart-alt-2"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div><!-- end card body -->
-                </div><!-- end card -->
-            </div><!-- end col -->
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+            </div>
         </div>
     </div>
     <div class="col-md-6">

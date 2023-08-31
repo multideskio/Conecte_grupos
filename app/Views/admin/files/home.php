@@ -1,7 +1,5 @@
 <?= $this->extend('admin/partials/template') ?>
-
 <?= $this->section('content') ?>
-
 <div class="row mb-3 pb-1">
     <div class="col-12">
         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
@@ -12,17 +10,19 @@
                 <!--end col-->
                 <div class="col-auto">
                     <a href="<?= site_url('dashboard/campaigns/create') ?>" type="button" class="btn btn-info" id="syncButton">
-                        <i class="ri-restart-line align-middle me-1"></i> Nova campanha
+                        <i class="ri-restart-line align-middle me-1"></i> Fazer upload
                     </a>
                 </div>
                 <!--end col-->
             </div>
-        </div><!-- end card header -->
+        </div>
+        <!-- end card header -->
     </div>
     <!--end col-->
 </div>
 <!--end row-->
 
-<?= $this->include('admin/campaigns/cards/campanhas') ?>
+<?= $this->include('admin/files/cards/table') ?>
+
 
 <?= $this->endSection() ?>

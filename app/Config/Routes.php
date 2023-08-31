@@ -11,6 +11,9 @@ $routes->get('/', 'Home::index');
 
 //rotas sem proteção
 $routes->get('teste', 'Home::teste');
+
+$routes->get('g/(:any)/(:any)', 'Home::group/$1/$2');
+
 $routes->post('teste', 'Home::teste');
 
 $routes->get('disconnected', 'Home::sair');
@@ -36,6 +39,7 @@ $routes->group('dashboard', ['filter' => [\App\Filters\LoggedIn::class, \App\Fil
     $routes->get('', 'Dashboard::index');
 
     $routes->get('campaigns', 'Dashboard::campaigns');
+    $routes->get('campaigns/create', 'Dashboard::createCampaigns');
     $routes->get('campaigns/(:any)', 'Dashboard::campaigns');
 
     $routes->get('schedule/(:any)', 'Dashboard::scheduledsView/$1');
@@ -45,7 +49,7 @@ $routes->group('dashboard', ['filter' => [\App\Filters\LoggedIn::class, \App\Fil
 
 
     $routes->get('instances', 'Dashboard::instance');
-    $routes->get('gallery', 'Dashboard::gallery');
+    $routes->get('files', 'Dashboard::files');
     $routes->get('tasks', 'Dashboard::tasks');
     $routes->get('leads', 'Dashboard::leads');
     $routes->get('synchronize', 'Dashboard::synchronize');
@@ -101,6 +105,11 @@ $routes->group('api/v1', ['filter' => 'logged'], static function ($routes) {
     $routes->resource('webhook',   ['controller' => APIWebhook::class]);   //
     $routes->resource('contacts',  ['controller' => APIContacts::class]);  //
     $routes->resource('config',    ['controller' => APIConfig::class]);    //
+
+    //Busca slugs existentes
+    $routes->get('campaigns/slug/(:any)', 'API\Campaigns::verifySlug/$1');
+
+
     $routes->resource('campaigns', ['controller' => APICampaigns::class]); //
     $routes->resource('messages',  ['controller' => APIMessages::class]);  //
 

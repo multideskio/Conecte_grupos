@@ -86,44 +86,48 @@ class Webhook extends ResourceController
 
     public function events($instance = null)
     {
-        /**
-         * ADICIONAR A LOGICA DE IDENTIFICAR A CAMPANHA PELO ID DO GRUPO
-         */
-        $instanceModel  = new InstanceModel();
-        $postPayload    = $this->request->getVar();
-        $logsGroupModel = new LogsGroupsModel();
+        try {
+            /**
+             * ADICIONAR A LOGICA DE IDENTIFICAR A CAMPANHA PELO ID DO GRUPO
+             */
+            $instanceModel  = new InstanceModel();
+            $postPayload    = $this->request->getVar();
+            $logsGroupModel = new LogsGroupsModel();
 
-        $participantModel = new ParticipantModel();
+            $participantModel = new ParticipantModel();
 
-        $build = $instanceModel->where([
-            'name'    => $instance,
-            'api_key' => $postPayload->apikey
-        ])->first();
+            $build = $instanceModel->where([
+                'name'    => $instance,
+                'api_key' => $postPayload->apikey
+            ])->first();
 
-        if(!$build){
-            log_message('error', "Company not found: instance {$instance}");
-            return $this->fail('Company not found');
-        }
+            if (!$build) {
+                log_message('error', "Company not found: instance {$instance}");
+                return $this->fail('Company not found');
+            }
 
-        $participant = $participantModel->where([
-            'id_company' => $build['id_company'],
-            'id_group'   => $postPayload->data->id
-        ])->first();
+            $participant = $participantModel->where([
+                'id_company' => $build['id_company'],
+                'id_group'   => $postPayload->data->id
+            ])->first();
 
-        if (isset($participant['admin'])) {
-            $data = [
-                'id_company'    => $build['id_company'],
-                'id_instance'   => $build['id'],
-                'id_group'      => $postPayload->data->id,
-                'event'         => $postPayload->event,
-                'action'        => $postPayload->data->action,
-                'participants'  => json_encode($postPayload->data->participants, true),
-                'payload'       => json_encode($postPayload, true)
-            ];
-            $logsGroupModel->insert($data);
-            return $this->respondCreated();
-        } else {
-            return $this->fail('User is not a group admin');
+            if (isset($participant['admin'])) {
+                $data = [
+                    'id_company'    => $build['id_company'],
+                    'id_instance'   => $build['id'],
+                    'id_group'      => $postPayload->data->id,
+                    'event'         => $postPayload->event,
+                    'action'        => $postPayload->data->action,
+                    'participants'  => json_encode($postPayload->data->participants, true),
+                    'payload'       => json_encode($postPayload, true)
+                ];
+                $logsGroupModel->insert($data);
+                return $this->respondCreated();
+            } else {
+                return $this->fail('User is not a group admin');
+            }
+        } catch (\Exception $e) {
+            return $this->fail(['error' => $e->getMessage()]);
         }
     }
 }

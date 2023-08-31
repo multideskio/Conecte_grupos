@@ -90,11 +90,11 @@
     $(document).ready(function() {
         // Referência para as tabelas
         var enviarTable = $('#enviar').DataTable({
-            "ajax": `${baseUrl}api/v1/messages/data/1/0`
+            "ajax": `${baseUrl}api/v1/messages/data/<?= session('user')['company'] ?>/0`
         });
 
         var enviadosTable = $('#enviados').DataTable({
-            "ajax": `${baseUrl}api/v1/messages/data/1/1`
+            "ajax": `${baseUrl}api/v1/messages/data/<?= session('user')['company'] ?>/1`
         });
 
 

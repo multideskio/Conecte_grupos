@@ -48,8 +48,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="<?= site_url('dashboard/gallery') ?>" role="button" aria-expanded="false" aria-controls="sidebarApps">
-                    <i class="ri-file-line"></i> <span ><?= lang('Menu.gallery') ?></span>
+                    <a class="nav-link menu-link" href="<?= site_url('dashboard/files') ?>" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                    <i class="ri-file-line"></i> <span ><?= lang('Menu.files') ?></span>
                     </a>
                 </li>
                 <li class="nav-item">

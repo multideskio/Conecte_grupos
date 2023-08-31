@@ -38,9 +38,6 @@ class Home extends BaseController
             $uploadedFile = $this->request->getFile('userfile');
 
 
-
-            
-
             // Gerar um novo nome aleatório mantendo a extensão original
             $newRandomName = $uploadedFile->getRandomName();// . '.' . $uploadedFile->getClientExtension();
 
@@ -156,5 +153,21 @@ class Home extends BaseController
         $json[] = json_decode($responseBody, true);
 
         return $this->response->setJSON(['body' => $posts]);
+    }
+
+
+    public function group($page, $id) : string {
+        
+        if($page == 'l'){
+            $p = "light";
+        }elseif($page == 'd'){
+            $p = "dark";
+        }elseif($page == 'g'){
+            $p = "green";
+        }else{
+            $p = "light";
+        }
+
+        return view('pages/'.$p);
     }
 }

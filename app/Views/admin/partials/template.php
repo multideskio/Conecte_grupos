@@ -23,14 +23,17 @@
 
             <div class="page-content">
                 <div class="container-fluid">
-                    <?php echo view('admin/partials/page-title', array('pagetitle' => 'Pages', 'title' => $title)); ?>
+                    <?php echo view('admin/partials/page-title', array('pagetitle' => 'Dashboard', 'title' => $title)); ?>
+                    <!-- <div class="text-center mb-2">
+                        <a href="https://multidesk.io/" target="_blank">
+                            <img src="https://cdn.multidesk.io/admin/MULTI-ATENDIMENTO.gif" class="img-fluid rounded" alt="" width="600px">
+                        </a>
+                    </div> -->
                     <?= $this->renderSection('content') ?>
-
                 </div>
                 <!-- container-fluid -->
             </div>
             <!-- End Page-content -->
-
             <?= $this->include('admin/partials/footer') ?>
         </div>
         <!-- end main content-->

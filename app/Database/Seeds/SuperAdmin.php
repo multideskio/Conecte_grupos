@@ -72,7 +72,8 @@ class SuperAdmin extends Seeder
             'valid_days' => 365,
             'payday' => date('Y-m-d'),
             'price' => 0,
-            'status' => true
+            'status' => true,
+            'size_files' => 200
         ];
 
         $mPlan = new PlanModel();

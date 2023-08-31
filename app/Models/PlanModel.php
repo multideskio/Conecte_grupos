@@ -20,7 +20,8 @@ class PlanModel extends Model
         'valid_days',
         'payday',
         'price',
-        'status'
+        'status',
+        'size_files'
     ];
 
     // Dates

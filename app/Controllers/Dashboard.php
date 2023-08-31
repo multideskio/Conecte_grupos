@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\CampaignModel;
+use App\Models\FileModel;
 use App\Models\GroupModel;
 use App\Models\InstanceModel;
 use App\Models\ParticipantModel;
@@ -10,9 +12,12 @@ use App\Models\SendModel;
 
 class Dashboard extends BaseController
 {
+    protected $cache;
+
     public function __construct()
     {
         helper(['response', 'text', 'inflector']);
+        $this->cache = service('cache');
     }
 
     public function index()
@@ -20,6 +25,7 @@ class Dashboard extends BaseController
         $participantsModel = new ParticipantModel();
         $sendsModel = new SendModel();
         $groupsModel = new GroupModel();
+        $campanhasModel = new CampaignModel();
 
         // Buscando quantidade de grupos pela instância
         $numGroups = $groupsModel
@@ -43,28 +49,53 @@ class Dashboard extends BaseController
             ->where('id_company', session('user')['company'])
             ->countAllResults();
 
+        // Busca qtd de campanhas
+        $numCampanhas = $campanhasModel->where('id_company', session('user')['company'])
+        ->countAllResults();
+
+        $data['numCampanhas'] = $numCampanhas;
         $data['numAdmin'] = $numAdmin;
         $data['numPart']  = $numPart;
         $data['numGroup'] = $numGroups;
         $data['numSends'] = $numSends;
-        $data['title']    = 'Dashboard';
+        $data['title']    = lang("Menu.dashboard");
 
         return view('admin/dashboard/home', $data);
     }
 
+    public function createCampaigns()
+    {
+        //
+        $data['title'] = lang("Menu.campaigns");
+        return view('admin/campaigns/create', $data);
+
+    }
 
     public function campaigns()
     {
+        $campanhasModel = new CampaignModel();
+        $filesModel     = new FileModel();
+
+        // Busca qtd de campanhas
+        $campanhas = $campanhasModel->where('id_company', session('user')['company'])->findAll();
+        
         //
-        $dv['title'] = 'Campaigns';
-        return view('admin/campaigns/home', $dv);
+
+        $data['campanhas'] = $campanhas;
+        $data['files']     = $filesModel;
+        $data['title'] = lang("Menu.campaigns");
+        return view('admin/campaigns/home', $data);
     }
 
-    public function gallery()
+    public function files()
     {
+        $filesModel = new FileModel();
+
+        $listFiles = $filesModel->where('id_company', session('user')['company'])->findAll();
         //
-        $dv['title'] = 'Synchronize';
-        return view('admin/synchronize/home', $dv);
+        $data['files'] = $listFiles;
+        $data['title'] = lang('Menu.files');
+        return view('admin/files/home', $data);
     }
 
     /**
@@ -87,6 +118,7 @@ class Dashboard extends BaseController
         //
         $dv['rowGroup']    = $rowGroup;
         $dv['rowInstance'] = $rowInstance;
+
         $dv['title'] = 'Send Message';
         return view('admin/campaigns/send', $dv);
     }
@@ -132,34 +164,34 @@ class Dashboard extends BaseController
     public function instance()
     {
         //
-        $dv['title'] = 'Instance';
+        $dv['title'] = lang("Menu.instances");
         return view('admin/instance/home', $dv);
     }
 
     public function tasks()
     {
         //
-        $dv['title'] = 'Tasks';
+        $dv['title'] = lang("Menu.tasks");
         return view('admin/tasks/home', $dv);
     }
 
     public function leads()
     {
         //
-        $dv['title'] = 'Leads';
+        $dv['title'] = lang("Menu.leads");
         return view('admin/leads/home', $dv);
     }
 
     public function synchronize()
     {
         //
-        $dv['title'] = 'Synchronize';
+        $dv['title'] = lang("Menu.sicronization");
         return view('admin/synchronize/home', $dv);
     }
     public function support()
     {
         //
-        $dv['title'] = 'Support';
+        $dv['title'] = lang("Menu.support");
         return view('admin/support/home', $dv);
     }
 
