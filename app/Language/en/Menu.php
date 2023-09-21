@@ -7,7 +7,7 @@ return [
     'files'         => 'Files',
     'tasks'         => 'Sends',
     'leads'         => 'Leads',
-    'sicronization' => 'Synchronization',
+    'sicronization' => 'Synchronization logs',
     'support'       => 'Support',
     'help'          => 'Help'
 ];

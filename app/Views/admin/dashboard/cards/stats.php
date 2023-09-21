@@ -141,7 +141,7 @@
     </div>
 </div>
 <h4>
-    Visão geral
+    Visão geral de grupos
 </h4>
 <div class="row">
     <div class="col-xl-3 col-md-3">
@@ -150,7 +150,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
-                        <p class="text-uppercase fw-medium text-muted mb-0">Grupos que você administra</p>
+                        <p class="text-uppercase fw-medium text-muted mb-0">Administração</p>
                     </div>
 
                 </div>
@@ -178,7 +178,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
-                        <p class="text-uppercase fw-medium text-muted mb-0">Grupos que participa</p>
+                        <p class="text-uppercase fw-medium text-muted mb-0">Participação</p>
                     </div>
                 </div>
                 <div class="d-flex align-items-end justify-content-between mt-4">
@@ -203,7 +203,7 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
-                        <p class="text-uppercase fw-medium text-muted mb-0">Total de pessoas</p>
+                        <p class="text-uppercase fw-medium text-muted mb-0">Pessoas</p>
                     </div>
                 </div>
                 <div class="d-flex align-items-end justify-content-between mt-4">
@@ -222,14 +222,41 @@
         </div><!-- end card -->
     </div><!-- end col -->
 
-
     <div class="col-xl-3 col-md-3">
         <!-- card -->
         <div class="card card-animate">
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-grow-1">
-                        <p class="text-uppercase fw-medium text-muted mb-0">Total de envios</p>
+                        <p class="text-uppercase fw-medium text-muted mb-0">Pessoas unicas</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-end justify-content-between mt-4">
+                    <div>
+                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                            <span class="counter-value" data-target="<?= $semRepetido ?>">0</span>
+                        </h4>
+                    </div>
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-warning-subtle rounded fs-3">
+                            <i class="bx bxs-group"></i>
+                        </span>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+    </div><!-- end col -->
+</div>
+
+<h4>Visão geral de envios</h4>
+<div class="row">
+    <div class="col-xl-4 col-md-4">
+        <!-- card -->
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-uppercase fw-medium text-muted mb-0">Envios</p>
                     </div>
                 </div>
                 <div class="d-flex align-items-end justify-content-between mt-4">
@@ -247,10 +274,57 @@
             </div><!-- end card body -->
         </div><!-- end card -->
     </div><!-- end col -->
+
+    <div class="col-xl-4 col-md-4">
+        <!-- card -->
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-uppercase fw-medium text-muted mb-0">Disparos</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-end justify-content-between mt-4">
+                    <div>
+                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                            <span class="counter-value" data-target="<?= $numDisparos ?>">0</span>
+                        </h4>
+                    </div>
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-warning-subtle rounded fs-3">
+                            <i class="bx bxs-paper-plane"></i>
+                        </span>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+    </div><!-- end col -->
+
+    <div class="col-xl-4 col-md-4">
+        <!-- card -->
+        <div class="card card-animate">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <p class="text-uppercase fw-medium text-muted mb-0">Arquivos</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-end justify-content-between mt-4">
+                    <div>
+                        <h4 class="fs-22 fw-semibold ff-secondary mb-4">
+                            <span class="counter-value" data-target="0">0</span>
+                        </h4>
+                    </div>
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-warning-subtle rounded fs-3">
+                            <i class="bx bxs-paper-plane"></i>
+                        </span>
+                    </div>
+                </div>
+            </div><!-- end card body -->
+        </div><!-- end card -->
+    </div><!-- end col -->
 </div>
-
-
-
 
 
 <?= $this->section('js') ?>

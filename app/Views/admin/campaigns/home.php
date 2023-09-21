@@ -24,5 +24,6 @@
 <!--end row-->
 
 <?= $this->include('admin/campaigns/cards/campanhas') ?>
+<?= $this->include('admin/campaigns/modals/newCampaigns') ?>
 
 <?= $this->endSection() ?>

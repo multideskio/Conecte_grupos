@@ -17,6 +17,14 @@ class Home extends BaseController
         return redirect()->to('login');
         //return view('welcome_message');
     }
+    public function teste()
+    {
+
+        $stripe = service('stripe');
+
+        echo "<pre>";
+        print_r($stripe->webhookEndpoints->all(['limit' => 3]));
+    }
     public function teste0()
 
     {
@@ -31,7 +39,7 @@ class Home extends BaseController
         }
     }
 
-    public function teste()
+    public function teste1()
     {
 
         if ($this->request->getMethod() === 'post' && $this->request->getFile('userfile')) {
@@ -39,7 +47,7 @@ class Home extends BaseController
 
 
             // Gerar um novo nome aleatório mantendo a extensão original
-            $newRandomName = $uploadedFile->getRandomName();// . '.' . $uploadedFile->getClientExtension();
+            $newRandomName = $uploadedFile->getRandomName(); // . '.' . $uploadedFile->getClientExtension();
 
             // Configurar o caminho no S3 com o novo nome aleatório
             $s3Path = 'groups/archives/1/' . $newRandomName;
@@ -156,18 +164,19 @@ class Home extends BaseController
     }
 
 
-    public function group($page, $id) : string {
-        
-        if($page == 'l'){
+    public function group($page, $id): string
+    {
+
+        if ($page == 'l') {
             $p = "light";
-        }elseif($page == 'd'){
+        } elseif ($page == 'd') {
             $p = "dark";
-        }elseif($page == 'g'){
+        } elseif ($page == 'g') {
             $p = "green";
-        }else{
+        } else {
             $p = "light";
         }
 
-        return view('pages/'.$p);
+        return view('pages/' . $p);
     }
 }

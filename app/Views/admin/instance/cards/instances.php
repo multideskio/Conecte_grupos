@@ -75,6 +75,7 @@
                                 <a class="dropdown-item" href="#">Editar perfil</a>
                                 <a class="dropdown-item" href="${baseUrl}dashboard/schedule/${data.name}">Agendar mensagem</a>
                                 <a class="dropdown-item" href="${baseUrl}dashboard/send/${data.name}">Enviar mensagem</a>
+                                <a class="dropdown-item sincronizaGrupos" href="javascript:void(0);" data-instance="${data.name}">Sincronizar grupos</a>
                             </div>
                         </div>
                     </div>
@@ -152,6 +153,9 @@
         }
 
 
+
+
+
         // Função genérica para executar ações
         function performAction(actionType, instance, apikey) {
             $('#syncButton').prop('disabled', true);
@@ -181,6 +185,8 @@
                 }
             });
         }
+
+
 
         // Usando a função genérica para diferentes ações
         $(document).on('click', '.desconect-link', function() {
@@ -231,6 +237,63 @@
 
         $('#syncButton').click(sincronize);
         instancias();
+
+
+
+
+
+
+
+
+
+
+        function sincronizeGroups(instance) {
+            Toastify({
+                text: "Sincronizando grupos",
+                duration: 3000,
+                style: {
+                    background: "linear-gradient(to right, #0011ff, #1d5d8f)",
+                },
+            }).showToast();
+
+            $.ajax({
+                type: "PUT",
+                url: `${baseUrl}api/v1/groups/sincronize/${instance}`,
+                dataType: "json",
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function(response) {
+                    Toastify({
+                        text: "Os grupos foram sincronizados com sucesso",
+                        duration: 5000,
+                        style: {
+                            background: "linear-gradient(to right, #569701, #2e8f1d)",
+                        },
+                    }).showToast();
+
+                    console.log(response);
+
+                },
+                error: function(xhr, status, error) {
+                    Toastify({
+                        text: `Houve um problema ao sincronizar, verifique a data!`,
+                        duration: 7000,
+                        style: {
+                            background: "linear-gradient(to right, #ff3838, #ff3e3e)",
+                        },
+                    }).showToast();
+
+                    console.log(error)
+                }
+            });
+        }
+
+        //SINCRONIZA GRUPOS
+        $(document).on('click', '.sincronizaGrupos', function() {
+            var instance = $(this).data('instance');
+            sincronizeGroups(instance);
+        });
     });
 </script>
 <?= $this->endSection() ?>

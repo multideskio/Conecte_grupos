@@ -40,12 +40,6 @@
             <div class="card-body">
                 <table id="listGroups" class="display table table-bordered dt-responsive table-striped" style="width:100%">
                     <thead>
-                        <th>
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="" name="">
-                                <label class="form-check-label" for=""></label>
-                            </div>
-                        </th>
                         <th>id</th>
                         <th>Info</th>
                         <th>Criado em</th>
@@ -57,12 +51,6 @@
                         </th>
                     </thead>
                     <tfoot>
-                        <th>
-                            <div class="form-check mb-3">
-                                <input class="form-check-input" type="checkbox" id="" name="">
-                                <label class="form-check-label" for=""></label>
-                            </div>
-                        </th>
                         <th>id</th>
                         <th>Info</th>
                         <th>Criado em</th>

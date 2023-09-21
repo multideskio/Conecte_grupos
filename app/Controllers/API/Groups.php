@@ -4,6 +4,7 @@ namespace App\Controllers\Api;
 
 use App\Libraries\Groups_Libraries;
 use App\Models\GroupModel;
+use App\Models\LogsGroupsModel;
 use App\Models\ParticipantModel;
 use App\Models\SchedulingModel;
 use App\Services\GroupService;
@@ -22,11 +23,12 @@ class Groups extends ResourceController
     use ResponseTrait;
 
     protected $session;
+    protected $cache;
 
     public function __construct()
     {
         //$this->session = $this->session = \Config\Services::session();
-
+        $this->cache = \Config\Services::cache();
         helper('response');
     }
 
@@ -125,14 +127,11 @@ class Groups extends ResourceController
 
     public function sincronize($instance = false)
     {
-
         $groupService = new GroupService($instance, session('user')['company']);
-
         try {
-
             $groupService->listGroups();
-            //return $this->respond(['success']);
-            return redirect()->back();
+            return $this->respond(['msg' => 'success']);
+            //return redirect()->back();
         } catch (\Exception $e) {
             return $this->fail($e->getMessage());
         }
@@ -244,10 +243,10 @@ class Groups extends ResourceController
      */
     public function datatable(int $company)
     {
-        $cache = \Config\Services::cache();
 
-        if ($cache->get("datatable_groups_" . $company)) {
-            return $this->response->setJSON($cache->get("datatable_groups_" . $company));
+
+        if ($this->cache->get("datatable_groups_" . $company)) {
+            return $this->response->setJSON($this->cache->get("datatable_groups_" . $company));
         } else {
             // Instanciar os modelos necessários
             $gruposModel = new GroupModel();
@@ -303,7 +302,6 @@ class Groups extends ResourceController
 
                 // Adicionar as informações formatadas ao array de resultados
                 $results[] = [
-                    $htmlInput,
                     $group['id'],
                     $htmlProfile,
                     $time->format('d/m/Y H:i:s'),
@@ -311,11 +309,42 @@ class Groups extends ResourceController
                     $vAdmin
                 ];
             }
-            $cache->save("datatable_groups_" . $company, json_encode(['data' => $results]), 600);
+            $this->cache->save("datatable_groups_" . $company, json_encode(['data' => $results]), 600);
+
             // Responder com os resultados formatados para a DataTable
-            return $this->response->setJSON($cache->get("datatable_groups_" . $company));
+            return $this->response->setJSON($this->cache->get("datatable_groups_" . $company));
         }
     }
 
 
+    public function logs($company)
+    {
+        if ($this->cache->get("datatable_logsgroups_" . $company)) {
+            return $this->response->setJSON($this->cache->get("datatable_logsgroups_" . $company));
+        } else {
+            $logsGroupsModel = new LogsGroupsModel();
+            $groupModel      = new GroupModel();
+            $groupsLogs      = $logsGroupsModel
+                ->select('logs_groups.*, instances.profile_name, instances.owner as instance_owner')
+                ->join('instances', 'instances.id = logs_groups.id_instance')
+                ->where('instances.id_company', $company)
+                ->findAll();
+            $data = [];
+
+            foreach ($groupsLogs as $row) {
+                $group = $groupModel->where(['id_group' => $row['id_group']])->first();
+
+                $data[] = [
+                    $row['id'],
+                    cleanPhoneNumber($row['participants']),
+                    ($group['subject']) ?? "",
+                    badgeStatus($row['action'])
+                ];
+            }
+
+            $this->cache->save("datatable_logsgroups_" . $company, json_encode(['data' => $data]), 600);
+            
+            return $this->respond(['data' => $data]);
+        }
+    }
 }

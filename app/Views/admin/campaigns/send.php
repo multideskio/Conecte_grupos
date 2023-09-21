@@ -13,9 +13,9 @@
             <div class="mt-3 mt-lg-0">
                 <!--end col -->
                 <div class="col-auto">
-                    <a href="<?= site_url('api/v1/groups/sincronize/'.$rowInstance['name'] ) ?>" type="button" class="btn btn-soft-success" id="syncButton">
+                    <button data-instance="<?= $rowInstance['name'] ?>" type="button" class="btn btn-soft-success sincronizaGrupos" id="syncButton">
                         <i class="ri-restart-line align-middle me-1"></i> Sincronizar grupos
-                    </a>
+                    </button>
                 </div>
                 <!--end col-->
             </div>

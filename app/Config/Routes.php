@@ -100,6 +100,7 @@ $routes->group('api/v1', ['filter' => 'logged'], static function ($routes) {
 
     $routes->get('messages/data/(:num)/(:any)', 'API\Messages::datatable/$1/$2');
     $routes->get('datatable/data/(:num)', 'API\Groups::datatable/$1');
+    $routes->get('datatable/logs/(:num)', 'API\Groups::logs/$1');
 
     $routes->resource('admin',     ['controller' => APIAdmin::class]);     //
     $routes->resource('webhook',   ['controller' => APIWebhook::class]);   //
@@ -115,7 +116,7 @@ $routes->group('api/v1', ['filter' => 'logged'], static function ($routes) {
 
     $routes->group('groups', ['namespace' => 'App\Controllers'], static function ($routes) {
         $routes->post('send', 'API\Groups::sendMessage');
-        $routes->get('sincronize/(:any)', 'API\Groups::sincronize/$1');
+        $routes->put('sincronize/(:any)', 'API\Groups::sincronize/$1');
 
         $routes->post('scheduleds', 'API\Groups::scheduleds');
     });    //

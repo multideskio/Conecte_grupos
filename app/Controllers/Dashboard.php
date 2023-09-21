@@ -23,9 +23,10 @@ class Dashboard extends BaseController
     public function index()
     {
         $participantsModel = new ParticipantModel();
-        $sendsModel = new SendModel();
-        $groupsModel = new GroupModel();
-        $campanhasModel = new CampaignModel();
+        $sendsModel        = new SendModel();
+        $groupsModel       = new GroupModel();
+        $campanhasModel    = new CampaignModel();
+        $filesModel        = new FileModel();
 
         // Buscando quantidade de grupos pela instância
         $numGroups = $groupsModel
@@ -45,20 +46,41 @@ class Dashboard extends BaseController
             ->where('id_company', session('user')['company'])
             ->countAllResults();
 
+        $semRepetido = $participantsModel
+            ->where('id_company', session('user')['company'])
+            ->groupBy('participant')
+            ->countAllResults();
+
+        //Numero de envios
         $numSends = $sendsModel
             ->where('id_company', session('user')['company'])
             ->countAllResults();
 
-        // Busca qtd de campanhas
-        $numCampanhas = $campanhasModel->where('id_company', session('user')['company'])
-        ->countAllResults();
+        //Numero de disparos
+        $numDisparos = $sendsModel
+            ->where('id_company', session('user')['company'])
+            ->groupBy('code')
+            ->countAllResults();
 
+        //Numero de arquivos no sistema
+        $numArchives = $filesModel
+            ->where('id_company', session('user')['company'])
+            ->countAllResults();
+
+        // Busca qtd de campanhas
+        $numCampanhas = $campanhasModel
+            ->where('id_company', session('user')['company'])
+            ->countAllResults();
+
+        $data['semRepetido']  = $semRepetido;
+        $data['numArchives']  = $numArchives;
+        $data['numDisparos']  = $numDisparos;
         $data['numCampanhas'] = $numCampanhas;
-        $data['numAdmin'] = $numAdmin;
-        $data['numPart']  = $numPart;
-        $data['numGroup'] = $numGroups;
-        $data['numSends'] = $numSends;
-        $data['title']    = lang("Menu.dashboard");
+        $data['numAdmin']     = $numAdmin;
+        $data['numPart']      = $numPart;
+        $data['numGroup']     = $numGroups;
+        $data['numSends']     = $numSends;
+        $data['title']        = lang("Menu.dashboard");
 
         return view('admin/dashboard/home', $data);
     }
@@ -68,7 +90,6 @@ class Dashboard extends BaseController
         //
         $data['title'] = lang("Menu.campaigns");
         return view('admin/campaigns/create', $data);
-
     }
 
     public function campaigns()
@@ -78,7 +99,7 @@ class Dashboard extends BaseController
 
         // Busca qtd de campanhas
         $campanhas = $campanhasModel->where('id_company', session('user')['company'])->findAll();
-        
+
         //
 
         $data['campanhas'] = $campanhas;

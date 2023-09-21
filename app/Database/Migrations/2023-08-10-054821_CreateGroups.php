@@ -29,32 +29,32 @@ class CreateGroups extends Migration
             'subject' => [
                 'type' => 'varchar',
                 'constraint' => 60,
-                'null' => false
+                'null' => true
             ],
             'subject_owner' => [
                 'type' => 'varchar',
                 'constraint' => 30,
-                'null' => false
+                'null' => true
             ],
             'subject_time' => [
                 'type' => 'varchar',
                 'constraint' => 20,
-                'null' => false
+                'null' => true
             ],
             'size' => [
                 'type' => 'varchar',
                 'constraint' => 20,
-                'null' => false
+                'null' => true
             ],
             'creation' => [
                 'type' => 'varchar',
                 'constraint' => 20,
-                'null' => false
+                'null' => true
             ],
             'owner' => [
                 'type' => 'varchar',
                 'constraint' => 30,
-                'null' => false
+                'null' => true
             ],
             'desc' => [
                 'type' => 'varchar',

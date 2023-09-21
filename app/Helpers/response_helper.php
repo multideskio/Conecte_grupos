@@ -156,3 +156,21 @@ if (!function_exists('cleanFilename')) {
         return $cleaned;
     }
 }
+
+
+if(!function_exists('badgeStatus')){
+    function badgeStatus($status){
+
+        if($status == 'add'){
+            $result = '<span class="badge bg-success">Adicionado ao grupo</span>';
+        }elseif($status == "promote"){
+            $result = '<span class="badge bg-info">Promovido</span>';
+        }elseif($status == "remove"){
+            $result = '<span class="badge bg-danger">Removido</span>';
+        }else{
+            $result = '<span class="badge bg-warning">{$status}</span>';
+        }
+
+        return $result ;
+    }
+}

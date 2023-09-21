@@ -108,5 +108,60 @@
             }
         });
     });
+
+
+
+    function sincronizeGroups(instance) {
+        Toastify({
+            text: "Sincronizando grupos",
+            duration: 3000,
+            style: {
+                background: "linear-gradient(to right, #0011ff, #1d5d8f)",
+            },
+        }).showToast();
+
+        $.ajax({
+            type: "PUT",
+            url: `${baseUrl}api/v1/groups/sincronize/${instance}`,
+            dataType: "json",
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function(response) {
+                Toastify({
+                    text: "Os grupos foram sincronizados com sucesso",
+                    duration: 5000,
+                    style: {
+                        background: "linear-gradient(to right, #569701, #2e8f1d)",
+                    },
+                }).showToast();
+
+                //console.log(response);
+
+                setTimeout(function() {
+                    window.location.reload(); // Esconde a mensagem após um curto período de tempo
+                }, 3000); // Tempo em milissegundos (aqui definido para 3 segundos)
+
+            },
+            
+            error: function(xhr, status, error) {
+                Toastify({
+                    text: `Houve um problema ao sincronizar, verifique a data!`,
+                    duration: 7000,
+                    style: {
+                        background: "linear-gradient(to right, #ff3838, #ff3e3e)",
+                    },
+                }).showToast();
+
+                console.log(error)
+            }
+        });
+    }
+
+    //SINCRONIZA GRUPOS
+    $(document).on('click', '.sincronizaGrupos', function() {
+        var instance = $(this).data('instance');
+        sincronizeGroups(instance);
+    });
 </script>
 <?= $this->endSection() ?>
