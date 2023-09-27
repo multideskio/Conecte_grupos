@@ -146,6 +146,8 @@ class InstanceService
         $response = $this->httpClient->request('GET', $apiUrl, [
             'headers' => $headers,
         ]);
+        
+
         return json_decode($response->getBody(), true);
     }
 
