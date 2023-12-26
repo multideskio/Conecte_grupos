@@ -9,6 +9,7 @@
         "aws/aws-sdk-php": "^3.279",
         "codeigniter4/framework": "^4.0",
         "codeigniter4/translations": "^4.3",
+        "predis/predis": "^2.2",
         "tatter/stripe": "^2.0"
     },
     "require-dev": {
