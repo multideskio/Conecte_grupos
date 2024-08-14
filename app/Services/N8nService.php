@@ -20,46 +20,40 @@ class N8nService
         $request = service('request');
         $post = $request->getJSON(); //$post->time
 
-        try {
-            // Exemplo de tempo manual
-            $dateTime = Time::NOW();
-            $date = $dateTime->format('Y-m-d H:i:s');
+        // Exemplo de tempo manual
+        $dateTime = Time::NOW();
+        $date = $dateTime->format('Y-m-d H:i:s');
 
-            $scheduledsModel = new SchedulingModel();
-            $search = $scheduledsModel
-                ->where('start <', $date)
-                ->where('status', false)
-                ->findAll();
+        $scheduledsModel = new SchedulingModel();
+        $search = $scheduledsModel
+            ->where('start <', $date)
+            ->where('status', false)
+            ->findAll();
 
-            if (!count($search)) {
-                throw new \Exception('Nada para fazer');
-            }
-
-            foreach ($search as $list) {
-                $rowSends = explode(",", $list['senders']);
-                $archive = (($list['archive']) != "") ? $list['archive'] : "";
-                foreach ($rowSends as $row) {
-                    $data[] = [
-                        'id'         => intval($list['id']),
-                        'instance'   => $list['id_instance'],
-                        'iduser'     => $list['id_user'],
-                        'send'       => $row,
-                        'message'    => str_replace("\n", "\\n", $list["message"]),
-                        'archive'    => $archive,
-                        'id_company' => intval($list['id_company']),
-                        'everyone'   => boolval($list['everyone'])
-                    ];
-
-                    $this->scheduledsSend($list['id_instance'], str_replace("\n", "\\n", $list["message"]), $row, $archive, boolval($list['everyone']), $list['id_user'], intval($list['id']));
-                }
-            }
-
-           return $data; // Retorna os dados processados
-
-        } catch (\Exception $e) {
-            return $e->getMessage();
+        if (!count($search)) {
+            throw new \Exception('Nada para fazer');
         }
 
+        foreach ($search as $list) {
+            $rowSends = explode(",", $list['senders']);
+            $archive = (($list['archive']) != "") ? $list['archive'] : "";
+            foreach ($rowSends as $row) {
+                $data[] = [
+                    'id'         => intval($list['id']),
+                    'instance'   => $list['id_instance'],
+                    'iduser'     => $list['id_user'],
+                    'send'       => $row,
+                    'message'    => str_replace("\n", "\\n", $list["message"]),
+                    'archive'    => $archive,
+                    'id_company' => intval($list['id_company']),
+                    'everyone'   => boolval($list['everyone'])
+                ];
+
+                $this->scheduledsSend($list['id_instance'], str_replace("\n", "\\n", $list["message"]), $row, $archive, boolval($list['everyone']), $list['id_user'], intval($list['id']));
+            }
+        }
+
+        return $data; // Retorna os dados processados
     }
 
     public function scheduledsSend($instanceId, $message, $destino, $archive, $mentions, $user, $idScheduled)
