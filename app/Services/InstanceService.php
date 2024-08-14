@@ -67,11 +67,14 @@ class InstanceService
         for ($i = 0; $i < $numInstances; $i++) {
             $instanceName = uniqid() . $this->sessionData['company'];
             $postPayload = [
-                "instanceName" => $instanceName,
                 "qrcode" => false,
-                "webhook" => site_url("api/v1/webhook/{$instanceName}"),
-                "webhook_by_events" => false,
-                "events" => [
+                "instanceName" => $instanceName,
+                //"token"  => $instanceName.'-'.$instanceName.'-'.$instanceName,
+                //"mobile" => false,
+                "integration" => "WHATSAPP-BAILEYS", /*WHATSAPP-BAILEYS | WHATSAPP-BUSINESS*/
+                "webhookUrl" => site_url("api/v1/webhook/{$instanceName}"),
+                "webhookByEvents" => false,
+                "webhookEvents" => [
                     // "APPLICATION_STARTUP",
                     //"QRCODE_UPDATED",
                     // "MESSAGES_SET",
@@ -121,7 +124,7 @@ class InstanceService
                 'id_company' => $this->sessionData['company'],
                 'name' => $row['instance']['instanceName'],
                 'server_url' => $this->apiCredentials['url'],
-                'api_key' => $row['hash']['apikey']
+                'api_key' => $row['hash']
             ];
         }
 
@@ -146,7 +149,6 @@ class InstanceService
         $response = $this->httpClient->request('GET', $apiUrl, [
             'headers' => $headers,
         ]);
-        
 
         return json_decode($response->getBody(), true);
     }
@@ -161,21 +163,29 @@ class InstanceService
         $apiResponse = $this->searchApi();
         $dataToUpdate = [];
 
+       /// echo "<pre>";
+
         foreach ($apiResponse as $item) {
-            if (isset($item['instance']['instanceName'])) {
-                $owner = isset($item['instance']['owner']) ? $item['instance']['owner'] : null;
+
+            if (isset($item['name'])) {
+
+                $owner = isset($item['ownerJid']) ? $item['ownerJid'] : null;
 
                 $dataToUpdate[] = [
-                    'name'                => $item['instance']['instanceName'],
+                    'name'                => $item['name'],
                     'phone'               => !empty($owner) ? cleanPhoneNumber($owner) : null,
                     'owner'               => $owner,
-                    'profile_name'        => $item['instance']['profileName'] ?? null,
-                    'profile_picture_url' => $item['instance']['profilePictureUrl'] ?? null,
-                    'profile_status'      => $item['instance']['profileStatus'] ?? null,
-                    'status'              => $item['instance']['status'] ?? null,
+                    'profile_name'        => $item['profileName'] ?? null,
+                    'profile_picture_url' => $item['profilePicUrl'] ?? null,
+                    //'profile_status'      => $item['profileStatus'] ?? null,
+                    'status'              => $item['connectionStatus'] ?? null,
                 ];
             }
+
+
+            ///print_r($item);
         }
+
         if (!empty($dataToUpdate)) {
             $this->instanceModel->updateBatch($dataToUpdate, 'name');
         }
@@ -233,7 +243,7 @@ class InstanceService
         ];
 
         // Faz a requisição HTTP DELETE
-        $response = $this->httpClient->request('PUT', $apiUrl, [
+        $response = $this->httpClient->request('POST', $apiUrl, [
             'headers' => $headers,
         ]);
 

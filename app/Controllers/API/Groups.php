@@ -125,6 +125,8 @@ class Groups extends ResourceController
         }
     }
 
+    
+
     public function sincronize($instance = false)
     {
         $groupService = new GroupService($instance, session('user')['company']);
@@ -179,47 +181,16 @@ class Groups extends ResourceController
 
     public function scheduledsn8n()
     {
-        $post = $this->request->getJSON();
         try {
-            $dateTime = Time::createFromFormat("Y-m-d\TH:i:s.uP", $post->time);
-            $date = $dateTime->format('Y-m-d H:i:s');
-            $scheduledsModel = new SchedulingModel();
-            $search = $scheduledsModel
-                ->where('start <', $date)
-                ->where('status', false)
-                ->findAll();
-
-            if (!count($search)) {
-                throw new \Exception('Nada para fazer');
-            }
-
-            foreach ($search as $list) {
-                $rowSends = explode(",", $list['senders']);
-
-                $archive = (($list['archive']) != "") ? $list['archive'] : "";
-
-                foreach ($rowSends as $row) {
-                    $data[] = [
-                        'id'         => intval($list['id']),
-                        'instance'   => $list['id_instance'],
-                        'iduser'     => $list['id_user'],
-                        'send'       => $row,
-                        'message'    => str_replace("\n", "\\n", $list["message"]),
-                        'archive'    => $archive,
-                        'id_company' => intval($list['id_company']),
-                        'everyone'   => boolval($list['everyone'])
-                    ];
-                }
-            }
-
-            return $this->respond($data);
+            $sendN8n = new N8nService();
+            return $this->respond($sendN8n->verify());
         } catch (\Exception $e) {
-
-            return $this->respondNoContent();
+            return $this->fail($e->getMessage());
         }
     }
 
-    public function scheduledsn8nsend($instance)
+
+    /*public function scheduledsn8nsend($instance)
     {
         $sendN8n = new N8nService();
         $posts = $this->request->getVar();
@@ -232,7 +203,7 @@ class Groups extends ResourceController
             return $this->respond(['error' => $e->getMessage()]);
         }
         return $this->respond($posts);
-    }
+    }*/
 
 
     /**
@@ -343,7 +314,7 @@ class Groups extends ResourceController
             }
 
             $this->cache->save("datatable_logsgroups_" . $company, json_encode(['data' => $data]), 600);
-            
+
             return $this->respond(['data' => $data]);
         }
     }

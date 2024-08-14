@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\InstanceModel;
 use App\Models\SchedulingModel;
 use App\Models\SendModel;
+use CodeIgniter\I18n\Time;
 
 class N8nService
 {
@@ -12,6 +13,53 @@ class N8nService
     public function __construct()
     {
         helper('whatsapp');
+    }
+
+    public function verify($post = null)
+    {
+        $request = service('request');
+        $post = $request->getJSON(); //$post->time
+
+        try {
+            // Exemplo de tempo manual
+            $dateTime = Time::NOW();
+            $date = $dateTime->format('Y-m-d H:i:s');
+
+            $scheduledsModel = new SchedulingModel();
+            $search = $scheduledsModel
+                ->where('start <', $date)
+                ->where('status', false)
+                ->findAll();
+
+            if (!count($search)) {
+                throw new \Exception('Nada para fazer');
+            }
+
+            foreach ($search as $list) {
+                $rowSends = explode(",", $list['senders']);
+                $archive = (($list['archive']) != "") ? $list['archive'] : "";
+                foreach ($rowSends as $row) {
+                    $data[] = [
+                        'id'         => intval($list['id']),
+                        'instance'   => $list['id_instance'],
+                        'iduser'     => $list['id_user'],
+                        'send'       => $row,
+                        'message'    => str_replace("\n", "\\n", $list["message"]),
+                        'archive'    => $archive,
+                        'id_company' => intval($list['id_company']),
+                        'everyone'   => boolval($list['everyone'])
+                    ];
+
+                    $this->scheduledsSend($list['id_instance'], str_replace("\n", "\\n", $list["message"]), $row, $archive, boolval($list['everyone']), $list['id_user'], intval($list['id']));
+                }
+            }
+
+           return $data; // Retorna os dados processados
+
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
     }
 
     public function scheduledsSend($instanceId, $message, $destino, $archive, $mentions, $user, $idScheduled)
@@ -74,21 +122,24 @@ class N8nService
             ]);
             $responseBody = $response->getBody();
             $json = json_decode($responseBody, true);
-            
+
             $inserSend = [
                 'id_company'  => $instance['id_company'],
                 'id_group'    => $destino,
                 'id_user'     => $user,
                 'message'     => $message,
-                'code'        => $instance['id_company'].'-'.$idScheduled
+                'code'        => $instance['id_company'] . '-' . $idScheduled
             ];
+
             $sendsModel = new SendModel();
+
             if (!empty($inserSend)) {
                 $sendsModel->insert($inserSend);
             }
+
             $scheduledsModel = new SchedulingModel();
             $scheduledsModel->update($idScheduled, ['status' => true]);
-            return $json ;
+            return $json;
         } else {
             throw new \Exception('Post não definido!');
         }

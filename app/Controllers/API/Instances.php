@@ -141,7 +141,7 @@ class Instances extends ResourceController
 
         try {
             $sDisconnect = $sInstance->restart($input);
-            sleep(3);
+            //sleep(3);
             $sInstance->verifyPlan();
             return $this->respond($sDisconnect);
         } catch (\Exception $e) {

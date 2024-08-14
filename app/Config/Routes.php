@@ -7,6 +7,10 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
+//AGENDAMENTO ACIONADO POR N8N
+$routes->get('api/v1/auth/scheduleds/n8n', 'API\Groups::scheduledsn8n');
+
+$routes->post('api/v1/auth/scheduleds/n8n/send/(:num)', 'API\Groups::scheduledsn8nsend/$1');
 
 
 //rotas sem proteção
@@ -99,6 +103,11 @@ $routes->get('health', function (){
     echo "Ok" ;
 });
 
+
+
+
+
+
 $routes->get('api/v1/auth/(:any)/(:any)', 'API\Users::auth/$1/$2');
 
 //$routes->get('api/v1/webhook/(:any)', 'API\Webhook::events/$1');
@@ -145,6 +154,5 @@ $routes->group('api/v1', ['filter' => 'logged'], static function ($routes) {
 
     //
 });
-//AGENDAMENTO ACIONADO POR N8N
-$routes->post('api/v1/auth/scheduleds/n8n', 'API\Groups::scheduledsn8n');
-$routes->post('api/v1/auth/scheduleds/n8n/send/(:num)', 'API\Groups::scheduledsn8nsend/$1');
+
+

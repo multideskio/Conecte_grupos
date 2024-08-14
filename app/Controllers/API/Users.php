@@ -100,7 +100,7 @@ class Users extends ResourceController
      */
     public function auth($id_chatwoot, $apiDashboard)
     {
-        // Injeta o AuthServiceChatwoot e os Modelos no construtor do controlador
+        /*// Injeta o AuthServiceChatwoot e os Modelos no construtor do controlador
         $authService = new AuthServiceChatwoot(new CompanyModel(), new UserModel());
         
         // Chama o método de autenticação do serviço
@@ -111,12 +111,12 @@ class Users extends ResourceController
             //return $this->respond($authResult); // Retorna detalhes do usuário autenticado
         } else {
             return $this->failUnauthorized($authResult); // Retorna mensagem de erro
-        }
+        }*/
     }
 
     public function test($id_chatwoot, $apiDashboard)
     {
-        try {
+        /*try {
 
             $authService = new AuthService();
             // Chama o método authenticate do AuthService para autenticar
@@ -128,6 +128,6 @@ class Users extends ResourceController
         } catch (\Exception $e) {
             // Retorna a resposta de erro com a mensagem da exceção
             return $this->failUnauthorized($e->getMessage());
-        }
+        }*/
     }
 }

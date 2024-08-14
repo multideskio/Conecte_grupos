@@ -6,6 +6,7 @@ use App\Models\CompanyGroupsModel;
 use App\Models\GroupModel;
 use App\Models\InstanceModel;
 use App\Models\ParticipantModel;
+use GuzzleHttp\Client;
 
 class GroupService
 {
@@ -34,9 +35,7 @@ class GroupService
 
             // Definir os cabeçalhos da requisição
             $headers = [
-                'Accept'       => '*/*',
-                'apikey'       => $this->instance[0]['api_key'],
-                'Content-Type' => 'application/json',
+                'apikey'       => $this->instance[0]['api_key']
             ];
 
             // Crie uma instância do cliente cURL do CodeIgniter 4
@@ -45,6 +44,7 @@ class GroupService
             $response = $httpClient->request('GET', $apiUrl, [
                 'headers' => $headers,
             ]);
+
             $groupsData = json_decode($response->getBody(), true);
 
             if (count($groupsData)) {
@@ -53,7 +53,7 @@ class GroupService
                 throw new \Exception('Você não tem grupos para atualizar');
             }
         } catch (\Exception $e) {
-            // Lidar com erros
+
             return ['error' => $e->getMessage(), 'url' => $apiUrl, 'apikey' => $this->instance[0]['api_key']];
         }
     }

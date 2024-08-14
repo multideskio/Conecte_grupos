@@ -115,28 +115,28 @@ class Groups_Libraries
                     case 'png':
                     case 'jpeg':
                         $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
-                        $posts  = createImageMessage($destino, $message, $archive);
+                        $posts  = createImageMessage($destino, $message, $archive, $mentions);
                         break;
                     case 'mp4':
                         $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
-                        $posts  = createVideoMessage($destino, $message, $archive);
+                        $posts  = createVideoMessage($destino, $message, $archive, $mentions);
                         break;
                     case 'xlsx':
                         $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
-                        $posts  = createXlsxDocumentMessage($destino, 'arquivo.xlsx', $message, $archive);
+                        $posts  = createXlsxDocumentMessage($destino, 'arquivo.xlsx', $message, $archive, $mentions);
                         break;
                     case 'zip':
                         $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
-                        $posts  = createZipDocumentMessage($destino, 'aqruivo.zip', $message, $archive);
+                        $posts  = createZipDocumentMessage($destino, 'aqruivo.zip', $message, $archive, $mentions);
                         break;
                     case 'pdf':
                         $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
-                        $posts  = createPdfDocumentMessage($destino, 'arquivo.pdf', $message, $archive);
+                        $posts  = createPdfDocumentMessage($destino, 'arquivo.pdf', $message, $archive, $mentions);
                         break;
                     case 'mp3':
                     case 'ogg':
-                        $apiUrl = "{$this->apiUrl}/message/sendMedia/{$this->instance}";
-                        $posts  = createAudioMessage($destino, $archive);
+                        $apiUrl = "{$this->apiUrl}/message/sendWhatsAppAudio/{$this->instance}";
+                        $posts  = createAudioMessage($destino, $archive, $mentions);
                         break;
                         // Adicione mais casos aqui para outros tipos de arquivo
                     default:

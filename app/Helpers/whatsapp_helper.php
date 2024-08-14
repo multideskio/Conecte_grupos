@@ -1,77 +1,64 @@
 <?php // app/Helpers/WhatsAppHelper.php
 
 if (!function_exists('createTextMessage')) {
-    function createTextMessage($number, $message, bool $mentions = false) {
+    function createTextMessage($number, $message, bool $mentions = false)
+    {
         return array(
             "number" => $number,
-            "options" => array(
-                "delay" => 1200,
-                "presence" => "composing",
-                "mentions" => array(
-                    "everyOne" => $mentions
-                )
-            ),
-            "textMessage" => array(
-                "text" => $message
-            )
+            "text"   => $message,
+            "mentionsEveryOne" => $mentions,
+            "linkPreview" => true,
         );
     }
 }
 
 if (!function_exists('createImageMessage')) {
-    function createImageMessage($number, $caption, $mediaUrl) {
+    function createImageMessage($number, $caption, $mediaUrl, bool $mentions = false)
+    {
         return array(
             "number" => $number,
-            "options" => array(
-                "delay" => 1200,
-                "presence" => "composing"
-            ),
-            "mediaMessage" => array(
-                "mediatype" => "image",
-                "caption" => $caption,
-                "media" => $mediaUrl
-            )
+            "mediatype" => "image",
+            "mimetype" => "image/png",
+            "caption" => $caption,
+            "media" => $mediaUrl,
+            "fileName" => basename($mediaUrl),
+            "mentionsEveryOne" => $mentions,
         );
     }
 }
 
 if (!function_exists('createVideoMessage')) {
-    function createVideoMessage($number, $caption, $mediaUrl) {
+    function createVideoMessage($number, $caption, $mediaUrl, bool $mentions = false)
+    {
         return array(
             "number" => $number,
-            "options" => array(
-                "delay" => 1200,
-                "presence" => "composing"
-            ),
-            "mediaMessage" => array(
-                "mediatype" => "video",
-                "caption" => $caption,
-                "media" => $mediaUrl
-            )
+            "mediatype" => "video",
+            "mimetype" => "video/mp4",
+            "caption" => $caption,
+            "media" => $mediaUrl,
+            "fileName" => basename($mediaUrl),
+            "mentionsEveryOne" => $mentions,
         );
     }
 }
 
 if (!function_exists('createPdfDocumentMessage')) {
-    function createPdfDocumentMessage($number, $fileName, $caption, $mediaUrl) {
+    function createPdfDocumentMessage($number, $fileName, $caption, $mediaUrl, bool $mentions = false)
+    {
         return array(
             "number" => $number,
-            "options" => array(
-                "delay" => 1200,
-                "presence" => "composing"
-            ),
-            "mediaMessage" => array(
-                "mediatype" => "document",
-                "fileName" => $fileName,
-                "caption" => $caption,
-                "media" => $mediaUrl
-            )
+            "mediatype" => "document",
+            "fileName" => $fileName,
+            "caption" => $caption,
+            "media" => $mediaUrl,
+            "mentionsEveryOne" => $mentions,
         );
     }
 }
 
 if (!function_exists('createXlsxDocumentMessage')) {
-    function createXlsxDocumentMessage($number, $fileName, $caption, $mediaUrl) {
+    function createXlsxDocumentMessage($number, $fileName, $caption, $mediaUrl, bool $mentions = false)
+    {
         return array(
             "number" => $number,
             "options" => array(
@@ -89,7 +76,8 @@ if (!function_exists('createXlsxDocumentMessage')) {
 }
 
 if (!function_exists('createZipDocumentMessage')) {
-    function createZipDocumentMessage($number, $fileName, $caption, $mediaUrl) {
+    function createZipDocumentMessage($number, $fileName, $caption, $mediaUrl, bool $mentions = false)
+    {
         return array(
             "number" => $number,
             "options" => array(
@@ -107,17 +95,12 @@ if (!function_exists('createZipDocumentMessage')) {
 }
 
 if (!function_exists('createAudioMessage')) {
-    function createAudioMessage($number, $audioUrl) {
+    function createAudioMessage($number, $audioUrl, bool $mentions = false)
+    {
         return array(
             "number" => $number,
-            "options" => array(
-                "delay" => 1200,
-                "presence" => "recording",
-                "encoding" => true
-            ),
-            "audioMessage" => array(
-                "audio" => $audioUrl
-            )
+            "audio" => $audioUrl,
+            "mentionsEveryOne" => $mentions
         );
     }
 }

@@ -22,7 +22,7 @@ class AuthServiceChatwoot
     public function authenticate($id_chatwoot, $apiDashboard)
     {
 
-        $findCompany = $this->mCompany->select('id, company, id_admin')
+       $findCompany = $this->mCompany->select('id, company, id_admin')
             ->where([
                 'id_chatwoot' => $id_chatwoot,
                 'api_key_chatwoot' => $apiDashboard

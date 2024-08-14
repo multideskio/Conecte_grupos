@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Libraries\Groups_Libraries;
 use App\Libraries\S3;
 use App\Models\ParticipantModel;
+use App\Services\InstanceService;
 
 class Home extends BaseController
 {
@@ -17,7 +18,17 @@ class Home extends BaseController
         return redirect()->to('login');
         //return view('welcome_message');
     }
-    public function teste()
+/*
+ * $groupService = new GroupService('66bc18ce6fedf1', session('user')['company']);
+ * return $groupService->listGroups();
+ */
+    public function teste(){
+        
+        $service = new InstanceService;
+        return $service->verifyPlan();
+
+    }
+    public function teste00()
     {
 
         $stripe = service('stripe');
