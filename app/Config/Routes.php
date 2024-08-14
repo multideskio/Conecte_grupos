@@ -95,6 +95,10 @@ use API\Messages  as APIMessages;
 use API\Webhook   as APIWebhook;
 use API\Participants   as APIParticipants;
 
+$routes->get('health', function (){
+    echo "Ok" ;
+});
+
 $routes->get('api/v1/auth/(:any)/(:any)', 'API\Users::auth/$1/$2');
 
 //$routes->get('api/v1/webhook/(:any)', 'API\Webhook::events/$1');
@@ -108,6 +112,7 @@ $routes->group('api/v1', ['filter' => 'logged'], static function ($routes) {
 
     $routes->get('datatable/particpants/(:num)', 'API\Participants::datatable/$1');
 
+    
     $routes->resource('admin',     ['controller' => APIAdmin::class]);     //
     $routes->resource('webhook',   ['controller' => APIWebhook::class]);   //
     $routes->resource('contacts',  ['controller' => APIContacts::class]);  //
