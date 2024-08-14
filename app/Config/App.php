@@ -18,7 +18,7 @@ class App extends BaseConfig
      *    http://example.com/
      */
     # public string $baseURL = 'https://g.multidesk.io';
-    public string $baseURL = 'http://localhost:8081';
+    public string $baseURL = 'http://groups.multdesk.io';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
