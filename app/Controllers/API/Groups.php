@@ -185,7 +185,7 @@ class Groups extends ResourceController
             $sendN8n = new N8nService();
             return $this->respond($sendN8n->verify());
         } catch (\Exception $e) {
-            return $this->fail($e->getMessage());
+            return $this->respond([$e->getMessage()]);
         }
     }
 
@@ -216,9 +216,9 @@ class Groups extends ResourceController
     {
 
 
-        if ($this->cache->get("datatable_groups_" . $company)) {
-            return $this->response->setJSON($this->cache->get("datatable_groups_" . $company));
-        } else {
+        //if ($this->cache->get("datatable_groups_" . $company)) {
+      //      return $this->response->setJSON($this->cache->get("datatable_groups_" . $company));
+       // } else {
             // Instanciar os modelos necessários
             $gruposModel = new GroupModel();
             $participantsModel = new ParticipantModel();
@@ -280,11 +280,11 @@ class Groups extends ResourceController
                     $vAdmin
                 ];
             }
-            $this->cache->save("datatable_groups_" . $company, json_encode(['data' => $results]), 600);
+           // $this->cache->save("datatable_groups_" . $company, json_encode(['data' => $results]), 600);
 
             // Responder com os resultados formatados para a DataTable
-            return $this->response->setJSON($this->cache->get("datatable_groups_" . $company));
-        }
+            return $this->respond(['data' => $results]); //$this->response->setJSON($this->cache->get("datatable_groups_" . $company));
+       // }
     }
 
 

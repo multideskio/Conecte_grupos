@@ -128,9 +128,9 @@ class Participants extends ResourceController
 
     public function dataTable(int $company)
     {
-        if ($this->cache->get("datatable_participants_" . $company)) {
-            return $this->response->setJSON($this->cache->get("datatable_participants_" . $company));
-        } else {
+        //if ($this->cache->get("datatable_participants_" . $company)) {
+            //return $this->response->setJSON($this->cache->get("datatable_participants_" . $company));
+        //} else {
             $gruposModel = new GroupModel();
             $participantsModel = new ParticipantModel();
             $results = [];
@@ -159,9 +159,9 @@ class Participants extends ResourceController
                     ];
                 }
             }
-            $this->cache->save("datatable_participants_" . $company, json_encode(['data' => $results]), 10);
-            return $this->response->setJSON($this->cache->get("datatable_participants_" . $company));
-        }
+            //$this->cache->save("datatable_participants_" . $company, json_encode(['data' => $results]), 10);
+            return $this->respond(['data' => $results]);
+        //}
     }
 
     public function delete($id = null)

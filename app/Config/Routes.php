@@ -88,16 +88,16 @@ $routes->group('chatwoot', ['filter' => 'loggedchatwoot', 'namespace' => 'App\Co
 
 //API'S
 
-use App\Controllers\API\Admin     as APIAdmin;
-use App\Controllers\API\Campaigns as APICampaigns;
-use App\Controllers\API\Config    as APIConfig;
-use App\Controllers\API\Contacts  as APIContacts;
-use App\Controllers\API\Groups    as APIGroups;
-use App\Controllers\API\Instances as APIInstances;
-use App\Controllers\API\Users     as APIUsers;
-use App\Controllers\API\Messages  as APIMessages;
-use App\Controllers\API\Webhook   as APIWebhook;
-use App\Controllers\API\Participants   as APIParticipants;
+use API\Admin     as APIAdmin;
+use API\Campaigns as APICampaigns;
+use API\Config    as APIConfig;
+use API\Contacts  as APIContacts;
+use API\Groups    as APIGroups;
+use API\Instances as APIInstances;
+use API\Users     as APIUsers;
+use API\Messages  as APIMessages;
+use API\Webhook   as APIWebhook;
+use API\Participants   as APIParticipants;
 
 $routes->get('health', function (){
     echo "Ok" ;
