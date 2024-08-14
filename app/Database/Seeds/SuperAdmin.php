@@ -13,18 +13,22 @@ class SuperAdmin extends Seeder
     public function run()
     {
         //
+        /* The code snippet you provided is a part of a PHP Seeder class that is used to populate the
+        database with initial data. Let's break down the code: */
         helper('response');
 
         $sData = [
             'name' => 'MultiDesk',
-            'url_api_wa' => 'https://v5.multidesk.io',
-            'api_key_wa' => 'B6D711FCDE4D4FD5936544120E713976'
+            'url_api_wa' => 'https://evo2.conect.app',
+            'api_key_wa' => 'yi2f32pfkwfwavcc2y9penmh2rn9tiggv07pzjkl5wyig18jmq'
         ];
         $mSuper = new SuperModel();
         $idSuper = $mSuper->insert($sData);
 
         echo "Super criado! \n";
         //
+        /* The code snippet you provided is creating a new company record in the database. Here's a
+        breakdown of what each part of the code is doing: */
         $cData = [
             'id_admin' => $idSuper,
             'name' => 'Paulo Henrique',
@@ -35,6 +39,9 @@ class SuperAdmin extends Seeder
         $idCompany = $mCompany->insert($cData);
         echo "Company criado!\n";
         //
+        /* The `` array contains two sets of data for creating user records in the database. Each
+        set represents a user with specific details such as name, WhatsApp number, email, user
+        level, permissions, status, hashed password, and a generated token. */
         $uData = [
             [
                 'id_company' => $idCompany,
@@ -65,6 +72,8 @@ class SuperAdmin extends Seeder
         echo "Users Criados!\n";
 
 
+        /* The code snippet you provided is creating a new plan record in the database. Here's a
+        breakdown of what each part of the code is doing: */
         $pData = [
             'id_company' => $idCompany,
             'id_user' => 1,
