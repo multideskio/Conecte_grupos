@@ -209,6 +209,12 @@ class Dashboard extends BaseController
         $dv['title'] = lang("Menu.sicronization");
         return view('admin/synchronize/home', $dv);
     }
+    public function participants()
+    {
+        //
+        $dv['title'] = lang("Menu.participants");
+        return view('admin/participants/home', $dv);
+    }
     public function support()
     {
         //

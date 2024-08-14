@@ -9,5 +9,6 @@ return [
     'leads'         => 'Leads',
     'sicronization' => 'Synchronization logs',
     'support'       => 'Support',
-    'help'          => 'Help'
+    'help'          => 'Help',
+    'participants'  => 'Participants'
 ];

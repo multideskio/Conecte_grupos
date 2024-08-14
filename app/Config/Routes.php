@@ -42,6 +42,9 @@ $routes->group('dashboard', ['filter' => [\App\Filters\LoggedIn::class, \App\Fil
     $routes->get('campaigns/create', 'Dashboard::createCampaigns');
     $routes->get('campaigns/(:any)', 'Dashboard::campaigns');
 
+    $routes->get('participants', 'Dashboard::participants');
+
+
     $routes->get('schedule/(:any)', 'Dashboard::scheduledsView/$1');
 
 
@@ -90,6 +93,7 @@ use API\Instances as APIInstances;
 use API\Users     as APIUsers;
 use API\Messages  as APIMessages;
 use API\Webhook   as APIWebhook;
+use API\Participants   as APIParticipants;
 
 $routes->get('api/v1/auth/(:any)/(:any)', 'API\Users::auth/$1/$2');
 
@@ -101,6 +105,8 @@ $routes->group('api/v1', ['filter' => 'logged'], static function ($routes) {
     $routes->get('messages/data/(:num)/(:any)', 'API\Messages::datatable/$1/$2');
     $routes->get('datatable/data/(:num)', 'API\Groups::datatable/$1');
     $routes->get('datatable/logs/(:num)', 'API\Groups::logs/$1');
+
+    $routes->get('datatable/particpants/(:num)', 'API\Participants::datatable/$1');
 
     $routes->resource('admin',     ['controller' => APIAdmin::class]);     //
     $routes->resource('webhook',   ['controller' => APIWebhook::class]);   //

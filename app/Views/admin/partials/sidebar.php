@@ -63,6 +63,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link menu-link" href="<?= site_url('dashboard/participants') ?>" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                        <i class="ri-space-ship-line"></i> <span ><?= lang('Menu.participants') ?></span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link menu-link" href="<?= site_url('dashboard/synchronize') ?>" role="button" aria-expanded="false" aria-controls="sidebarApps">
                         <i class="ri-restart-line"></i> <span ><?= lang('Menu.sicronization') ?></span>
                     </a>
