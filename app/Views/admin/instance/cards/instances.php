@@ -75,6 +75,7 @@
                                 <a class="dropdown-item" href="#">Editar perfil</a>
                                 <a class="dropdown-item" href="${baseUrl}dashboard/schedule/${data.name}">Agendar mensagem</a>
                                 <a class="dropdown-item" href="${baseUrl}dashboard/send/${data.name}">Enviar mensagem</a>
+                                <a class="dropdown-item" href="${baseUrl}dashboard/updatesgroups/${data.name}">Atualizar grupos em massa</a>
                                 <a class="dropdown-item sincronizaGrupos" href="javascript:void(0);" data-instance="${data.name}">Sincronizar grupos</a>
                             </div>
                         </div>

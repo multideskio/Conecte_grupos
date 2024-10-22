@@ -24,8 +24,8 @@ class Home extends BaseController
  */
     public function teste(){
         
-        $service = new InstanceService;
-        return $service->verifyPlan();
+        $service = new Groups_Libraries('https://evo2.conect.app', '7DF35DD5-DA62-4829-BBBD-08443622759B', '66bc612e814ae1');
+        return $service->createGroupsMulti(5, ['556281154120', '5562981204120'], 'Group DEV - Mudar');
 
     }
     public function teste00()

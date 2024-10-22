@@ -125,7 +125,7 @@ class Groups extends ResourceController
         }
     }
 
-    
+
 
     public function sincronize($instance = false)
     {
@@ -217,74 +217,74 @@ class Groups extends ResourceController
 
 
         //if ($this->cache->get("datatable_groups_" . $company)) {
-      //      return $this->response->setJSON($this->cache->get("datatable_groups_" . $company));
-       // } else {
-            // Instanciar os modelos necessários
-            $gruposModel = new GroupModel();
-            $participantsModel = new ParticipantModel();
+        //      return $this->response->setJSON($this->cache->get("datatable_groups_" . $company));
+        // } else {
+        // Instanciar os modelos necessários
+        $gruposModel = new GroupModel();
+        $participantsModel = new ParticipantModel();
 
-            // Inicializar o array para armazenar os resultados formatados
-            $results = [];
+        // Inicializar o array para armazenar os resultados formatados
+        $results = [];
 
-            // Buscar os grupos com informações relevantes usando um join com a tabela de instâncias
-            $groups = $gruposModel
-                ->select('groups.*, instances.profile_name, instances.owner as instance_owner')
-                ->join('instances', 'instances.id = groups.instance')
-                ->where('instances.id_company', $company)
-                ->findAll();
+        // Buscar os grupos com informações relevantes usando um join com a tabela de instâncias
+        $groups = $gruposModel
+            ->select('groups.*, instances.profile_name, instances.owner as instance_owner')
+            ->join('instances', 'instances.id = groups.instance')
+            ->where('instances.id_company', $company)
+            ->findAll();
 
-            foreach ($groups as $group) {
-                // Contar o número de participantes no grupo
-                $sqlParticipantsCount = $participantsModel
-                    ->where('id_group', $group['id_group'])
-                    ->countAllResults();
+        foreach ($groups as $group) {
+            // Contar o número de participantes no grupo
+            $sqlParticipantsCount = $participantsModel
+                ->where('id_group', $group['id_group'])
+                ->countAllResults();
 
-                // Verificar se o dono da instância é um administrador
-                $sqlParticipantsAdm = $participantsModel
-                    ->whereIn('admin', ['admin', 'superadmin'])
-                    ->where('id_group', $group['id_group'])
-                    ->where('participant', $group['instance_owner'])
-                    ->first();
+            // Verificar se o dono da instância é um administrador
+            $sqlParticipantsAdm = $participantsModel
+                ->whereIn('admin', ['admin', 'superadmin'])
+                ->where('id_group', $group['id_group'])
+                ->where('participant', $group['instance_owner'])
+                ->first();
 
-                // Determinar os ícones e tags a serem exibidos com base na verificação de administrador
-                if (isset($sqlParticipantsAdm['admin'])) {
-                    $vAdmin = '<div class="hstack gap-3 flex-wrap">
+            // Determinar os ícones e tags a serem exibidos com base na verificação de administrador
+            if (isset($sqlParticipantsAdm['admin'])) {
+                $vAdmin = '<div class="hstack gap-3 flex-wrap">
                 <a href="#"><i class="ri-user-follow-fill"></i></a>
                 <a href="#"><i class="ri-edit-2-line"></i></a>
                 <a href="#"><i class="ri-information-line"></i></a>
                 </div>';
-                    $tagAdmin = '<span class="badge bg-primary">' . $sqlParticipantsAdm['admin'] . '</span><br>';
-                } else {
-                    $vAdmin = '<div class="hstack gap-3 flex-wrap">
+                $tagAdmin = '<span class="badge bg-primary">' . $sqlParticipantsAdm['admin'] . '</span><br>';
+            } else {
+                $vAdmin = '<div class="hstack gap-3 flex-wrap">
                 <a href="#"><i class="ri-user-unfollow-fill"></i></a>
                 <a href="#"><i class="ri-information-line"></i></a>
                 </div>';
-                    $tagAdmin = "";
-                }
-
-                // Formatar o HTML para a coluna de checkbox
-                $htmlInput   = '<div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="' . $group['id'] . '" name="' . $group['id'] . '"><label class="form-check-label" for="' . $group['id'] . '"></label></div>';
-
-                // Formatar o HTML para a coluna de perfil com administração e contagem de participantes
-                $htmlProfile = $tagAdmin . $group['subject'] . '<hr class="p-0 m-0"><b>Instance: </b>' . $group['profile_name'] . '<br><b>Participantes: </b><span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>' . $sqlParticipantsCount . '</span><br>' . $group['id_group'];
-
-                // Converter o timestamp de criação em formato de data e hora
-                $time = Time::createFromTimestamp($group['creation']);
-
-                // Adicionar as informações formatadas ao array de resultados
-                $results[] = [
-                    $group['id'],
-                    $htmlProfile,
-                    $time->format('d/m/Y H:i:s'),
-                    "",
-                    $vAdmin
-                ];
+                $tagAdmin = "";
             }
-           // $this->cache->save("datatable_groups_" . $company, json_encode(['data' => $results]), 600);
 
-            // Responder com os resultados formatados para a DataTable
-            return $this->respond(['data' => $results]); //$this->response->setJSON($this->cache->get("datatable_groups_" . $company));
-       // }
+            // Formatar o HTML para a coluna de checkbox
+            $htmlInput   = '<div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="' . $group['id'] . '" name="' . $group['id'] . '"><label class="form-check-label" for="' . $group['id'] . '"></label></div>';
+
+            // Formatar o HTML para a coluna de perfil com administração e contagem de participantes
+            $htmlProfile = $tagAdmin . $group['subject'] . '<hr class="p-0 m-0"><b>Instance: </b>' . $group['profile_name'] . '<br><b>Participantes: </b><span class="badge badge-label bg-danger"><i class="mdi mdi-circle-medium"></i>' . $sqlParticipantsCount . '</span><br>' . $group['id_group'];
+
+            // Converter o timestamp de criação em formato de data e hora
+            $time = Time::createFromTimestamp($group['creation']);
+
+            // Adicionar as informações formatadas ao array de resultados
+            $results[] = [
+                $group['id'],
+                $htmlProfile,
+                $time->format('d/m/Y H:i:s'),
+                "",
+                $vAdmin
+            ];
+        }
+        // $this->cache->save("datatable_groups_" . $company, json_encode(['data' => $results]), 600);
+
+        // Responder com os resultados formatados para a DataTable
+        return $this->respond(['data' => $results]); //$this->response->setJSON($this->cache->get("datatable_groups_" . $company));
+        // }
     }
 
 
@@ -317,5 +317,14 @@ class Groups extends ResourceController
 
             return $this->respond(['data' => $data]);
         }
+    }
+
+
+    public function updateall()
+    {
+        $posts = $this->request->getPost();
+        $groups = new Groups_Libraries($posts['apiurl'], $posts['apikey'], $posts['instance']);
+        $groups->updateAll($posts['groups'], $posts['image'], $posts['title'], $posts['desc'], $posts['trancar']);
+        return redirect()->back();
     }
 }

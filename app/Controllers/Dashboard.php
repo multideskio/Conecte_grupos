@@ -145,6 +145,35 @@ class Dashboard extends BaseController
     }
     //
 
+
+
+    public function updatesgroups($instance)
+    {
+        //Busca instancia
+        $instanceModel = new InstanceModel();
+        $rowInstance   = $instanceModel->where(['name' => $instance, 'id_company' => session('user')['company']])->first();
+        if (!$rowInstance) {
+            return redirect()->back();
+            $this->session->setFlashdata('error', "Instância não definida!");
+            exit;
+        }
+
+        //busca grupos
+        $groupsModel = new GroupModel();
+        $rowGroup    = $groupsModel->where(['instance' => $rowInstance['id']])->findAll();
+        //
+        $dv['rowGroup']    = $rowGroup;
+        $dv['rowInstance'] = $rowInstance;
+
+        $dv['title'] = 'Update Groups';
+
+        return view('admin/groups/updateAll', $dv);
+    }
+
+
+
+
+
     public function scheduledsView($instance)
     {
 

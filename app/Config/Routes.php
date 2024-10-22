@@ -53,6 +53,7 @@ $routes->group('dashboard', ['filter' => [\App\Filters\LoggedIn::class, \App\Fil
 
 
     $routes->get('send/(:any)', 'Dashboard::sendView/$1');
+    $routes->get('updatesgroups/(:any)', 'Dashboard::updatesgroups/$1');
 
 
     $routes->get('instances', 'Dashboard::instance');
@@ -137,6 +138,8 @@ $routes->group('api/v1', ['filter' => 'logged'], static function ($routes) {
     $routes->group('groups', ['namespace' => 'App\Controllers'], static function ($routes) {
         $routes->post('send', 'API\Groups::sendMessage');
         $routes->put('sincronize/(:any)', 'API\Groups::sincronize/$1');
+
+        $routes->post('updateall', 'API\Groups::updateall');
 
         $routes->post('scheduleds', 'API\Groups::scheduleds');
     });    //
